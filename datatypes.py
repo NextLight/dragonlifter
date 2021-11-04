@@ -110,3 +110,52 @@ class Pcode:
     op: Op
     output: Varnode
     input: list[Varnode]
+
+@dataclass
+class Instruction:
+    address: int
+    asm: str
+    pcodes: list[Pcode]
+
+@dataclass
+class Function:
+    name: str
+    address: int
+    instructions: list[Instruction]
+
+@dataclass
+class BlockInfo:
+    name: str
+    address_space_id: int
+    start: int
+    end: int
+    @property
+    def size(self): return self.end - self.start
+
+@dataclass
+class Memory:
+    blocks_info: list[BlockInfo]
+    compressed_buffer: str
+
+@dataclass
+class Register:
+    name: str
+    size: int
+
+@dataclass
+class RegistersBlock:
+    offset: int
+    registers: list[Register]
+
+@dataclass
+class AddressSpace:
+    name: str
+    id: int
+
+@dataclass
+class Program:
+    functions: list[Function]
+    op_names: list[str]
+    address_spaces: list[tuple]
+    registers_blocks: list[RegistersBlock]
+    memory: Memory
