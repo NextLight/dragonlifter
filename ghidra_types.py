@@ -1,5 +1,7 @@
+import json
+from dataclasses import Field, dataclass, is_dataclass
 from enum import Enum, IntEnum, auto
-from dataclasses import dataclass
+from typing import get_args, get_origin
 
 class VarnodeType(Enum):
     @staticmethod
@@ -159,3 +161,27 @@ class Program:
     address_spaces: list[tuple]
     registers_blocks: list[RegistersBlock]
     memory: Memory
+
+    @classmethod
+    def load(cls, f) -> "Program":
+        return _map_object_to_dataclass(json.load(f), Program)
+
+def _map_object_to_dataclass(o, cls_type: type):
+    if o is None:
+        return None
+    elif is_dataclass(cls_type):
+        cls_fields: dict[str, Field] = getattr(cls_type, '__dataclass_fields__')
+        if isinstance(o, list):
+            return cls_type(*(_map_object_to_dataclass(v, f.type) for v, f in zip(o, cls_fields.values())))
+        elif isinstance(o, dict):
+            return cls_type(**{n: _map_object_to_dataclass(v, cls_fields[n].type) for n, v in o.items()})
+        else:
+            assert False, o
+    elif issubclass(cls_type, Enum):
+        return cls_type(o)
+    elif get_origin(cls_type) == list:
+        arg_type: type = get_args(cls_type)[0]
+        out = [_map_object_to_dataclass(x, arg_type) for x in o]
+        return out
+    else:
+        return o
