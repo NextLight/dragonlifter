@@ -13,7 +13,7 @@ from ghidra.framework import OperatingSystem
 
 PRETTY_PRINT = False
 
-# keep this in sync with the one inside datatypes.py
+# keep this in sync with the one inside ghidra_types.py
 class VarnodeType:
     TEMP = 'temp'
     REGISTER = 'register'

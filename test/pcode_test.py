@@ -8,7 +8,7 @@ import sys
 from typing import Type
 
 from code_emitter import CodeEmitter
-from datatypes import *
+from ghidra_types import *
 from pcode import *
 
 

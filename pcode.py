@@ -1,7 +1,7 @@
 from enum import Enum, auto
 from typing import Callable, Optional
 
-from datatypes import *
+from ghidra_types import *
 
 
 BYTE_SIZE = 8
