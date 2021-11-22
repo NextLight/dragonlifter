@@ -1,4 +1,6 @@
 import pytest
+
+from dragonlifter import Dragonlifter
 pytest.main(['-x', '--ff', __file__])
 
 import io
@@ -9,7 +11,7 @@ from typing import Type
 
 from code_emitter import CodeEmitter
 from ghidra_types import *
-from pcode import *
+from lifters.pcode_lifter import MAP_FLOAT_SIZE_TO_TYPE, MAP_INT_SIZE_TO_TYPE, Output, OutputSigned, PcodeLifter, Var, VarKind
 
 
 def setup_module():
@@ -50,7 +52,7 @@ def run_c_code(code: bytes) -> str:
         raise e
 
 def run_pcodes(pcodes: list[Pcode], out_var: Var):
-    p2c = Pcode2c(register_offset_and_size_to_name = {})
+    lifter = PcodeLifter(Dragonlifter._EMPTY)
 
     with io.StringIO() as out_c:
         p = CodeEmitter(out_c)
@@ -76,14 +78,14 @@ def run_pcodes(pcodes: list[Pcode], out_var: Var):
         ''')
         p.emit('typedef union {')
         for s, k in VAR_SIZE_KIND_COMBINATIONS:
-            p.emit(f'{p2c.size_kind_to_type(s, k)} {p2c.field_name(s, k)};')
+            p.emit(f'{lifter.size_kind_to_type(s, k)} {lifter.field_name(s, k)};')
         p.emit('} varnode_t;')
         p.emit('int main() {')
-        c_code_lines = list(map(p2c.dispatch, pcodes))
-        p.emit(f'varnode_t {",".join(p2c.used_temps)};')
+        c_code_lines = list(map(lifter.dispatch, pcodes))
+        p.emit(f'varnode_t {",".join(lifter.used_temps)};')
         for c_code in c_code_lines:
             p.emit(c_code)
-        p.emit(f'printf("%{printf_string_format(out_var.kind, out_var.size)}", {p2c.var(out_var)});')
+        p.emit(f'printf("%{printf_string_format(out_var.kind, out_var.size)}", {lifter.var(out_var)});')
         p.emit(f'return 0;')
         p.emit('}')
 

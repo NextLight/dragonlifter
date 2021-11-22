@@ -1,8 +1,11 @@
+import typing
 from enum import Enum, auto
 from typing import Callable, Optional
 
-from ghidra_types import *
+if typing.TYPE_CHECKING:
+    from dragonlifter import Dragonlifter
 
+from ghidra_types import *
 
 BYTE_SIZE = 8
 MAP_INT_SIZE_TO_TYPE = {1: 'char', 2: 'short', 4: 'int', 8: 'long long'}
@@ -27,15 +30,15 @@ class InputFloating(Input): kind = VarKind.FLOATING
 class OutputBool(Output): constraint_size = 1
 class InputBool(Input): constraint_size = 1
 
-class Pcode2c:
-    def __init__(self, register_offset_and_size_to_name: dict[tuple[int, int], str]):
-        self.register_offset_and_size_to_name = register_offset_and_size_to_name
+class PcodeLifter:
+    def __init__(self, lifter: "Dragonlifter"):
+        self.lifter = lifter
         self.used_temps: set[str] = set()
 
     def dispatch(self, pcode: Pcode) -> str:
         f: Callable[..., str] = getattr(self, f'_{pcode.op.name.lower()}', None)
         if not f:
-            raise Exception(f'Opcode {pcode.op.name} not implemented. {pcode=}')
+            raise NotImplementedError(f'Opcode {pcode.op.name} is not implemented yet. {pcode=}')
         args = []
         inputs_count = 0
         output_count = 0
@@ -89,7 +92,7 @@ class Pcode2c:
         return f'{name}.{self.field(var)}'
 
     def register(self, var: Var) -> str:
-        return self.register_offset_and_size_to_name[(var.value, var.size)]
+        return self.lifter.core.register_from_offset_and_size(var.value, var.size)
 
     def var(self, var: Var) -> str:
         t = var.type
@@ -108,24 +111,15 @@ class Pcode2c:
         assert out.size == in0.size
         return f'{self.var(out)} = {self.var(in0)};'
 
-    def _load(self):
-        raise NotImplementedError("P-code LOAD is not implemented yet.")
-    def _store(self):
-        raise NotImplementedError("P-code STORE is not implemented yet.")
-    def _branch(self):
-        raise NotImplementedError("P-code BRANCH is not implemented yet.")
-    def _cbranch(self):
-        raise NotImplementedError("P-code CBRANCH is not implemented yet.")
-    def _branchind(self):
-        raise NotImplementedError("P-code BRANCHIND is not implemented yet.")
-    def _call(self):
-        raise NotImplementedError("P-code CALL is not implemented yet.")
-    def _callind(self):
-        raise NotImplementedError("P-code CALLIND is not implemented yet.")
-    def _callother(self):
-        raise NotImplementedError("P-code CALLOTHER is not implemented yet.")
-    def _return(self):
-        raise NotImplementedError("P-code RETURN is not implemented yet.")
+    #def _load(self): raise NotImplementedError("P-code LOAD is not implemented yet.")
+    #def _store(self): raise NotImplementedError("P-code STORE is not implemented yet.")
+    #def _branch(self): raise NotImplementedError("P-code BRANCH is not implemented yet.")
+    #def _cbranch(self): raise NotImplementedError("P-code CBRANCH is not implemented yet.")
+    #def _branchind(self): raise NotImplementedError("P-code BRANCHIND is not implemented yet.")
+    #def _call(self): raise NotImplementedError("P-code CALL is not implemented yet.")
+    #def _callind(self): raise NotImplementedError("P-code CALLIND is not implemented yet.")
+    #def _callother(self): raise NotImplementedError("P-code CALLOTHER is not implemented yet.")
+    #def _return(self): raise NotImplementedError("P-code RETURN is not implemented yet.")
 
     def _int_equal(self, out: OutputBool, in0: Input, in1: Input):
         assert in0.size == in1.size
@@ -314,10 +308,8 @@ class Pcode2c:
         assert in0.size == out.size
         return f'{self.var(out)} = ROUND({in0.size}, {self.var(in0)});'
 
-    def _multiequal(self):
-        raise NotImplementedError("P-code MULTIEQUAL is not implemented yet.")
-    def _indirect(self):
-        raise NotImplementedError("P-code INDIRECT is not implemented yet.")
+    #def _multiequal(self): raise NotImplementedError("P-code MULTIEQUAL is not implemented yet.")
+    #def _indirect(self): raise NotImplementedError("P-code INDIRECT is not implemented yet.")
 
     def _piece(self, out: Output, in0: Input, in1: Input):
         assert in0.size + in1.size == out.size
@@ -327,22 +319,14 @@ class Pcode2c:
         assert in1.type == VarnodeType.CONSTANT
         return f'{self.var(out)} = ({self.var(in0)} / {hex(2 ** (in1.value * BYTE_SIZE))});'
 
-    def _cast(self):
-        raise NotImplementedError("P-code CAST is not implemented yet.")
-    def _ptradd(self):
-        raise NotImplementedError("P-code PTRADD is not implemented yet.")
-    def _ptrsub(self):
-        raise NotImplementedError("P-code PTRSUB is not implemented yet.")
-    def _segmentop(self):
-        raise NotImplementedError("P-code SEGMENTOP is not implemented yet.")
-    def _cpoolref(self):
-        raise NotImplementedError("P-code CPOOLREF is not implemented yet.")
-    def _new(self):
-        raise NotImplementedError("P-code NEW is not implemented yet.")
-    def _insert(self):
-        raise NotImplementedError("P-code INSERT is not implemented yet.")
-    def _extract(self):
-        raise NotImplementedError("P-code EXTRACT is not implemented yet.")
+    #def _cast(self): raise NotImplementedError("P-code CAST is not implemented yet.")
+    #def _ptradd(self): raise NotImplementedError("P-code PTRADD is not implemented yet.")
+    #def _ptrsub(self): raise NotImplementedError("P-code PTRSUB is not implemented yet.")
+    #def _segmentop(self): raise NotImplementedError("P-code SEGMENTOP is not implemented yet.")
+    #def _cpoolref(self): raise NotImplementedError("P-code CPOOLREF is not implemented yet.")
+    #def _new(self): raise NotImplementedError("P-code NEW is not implemented yet.")
+    #def _insert(self): raise NotImplementedError("P-code INSERT is not implemented yet.")
+    #def _extract(self): raise NotImplementedError("P-code EXTRACT is not implemented yet.")
 
     def _popcount(self, out: Output, in0: Input):
         return f'{self.var(out)} = POPCOUNT({in0.size}, {self.var(in0)});'
