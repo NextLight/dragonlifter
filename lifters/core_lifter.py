@@ -49,6 +49,7 @@ class CoreLifter:
         self.setup_memory()
 
     def setup_default_types(self):
+        self.h_includes.append('#include <stdint.h>')
         self.typedefs.extend((
             self.generate_generic_typedefs(),
             '',
