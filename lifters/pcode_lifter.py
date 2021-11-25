@@ -6,17 +6,8 @@ if typing.TYPE_CHECKING:
     from dragonlifter import Dragonlifter
 
 from ghidra_types import *
+from .core_helper import VarKind
 
-BYTE_SIZE = 8
-MAP_INT_SIZE_TO_TYPE = {1: 'char', 2: 'short', 4: 'int', 8: 'long long'}
-MAP_FLOAT_SIZE_TO_TYPE = {4: 'float', 8: 'double', 10: 'long double'}
-
-class VarKind(Enum):
-    UNSIGNED = auto()
-    SIGNED = auto()
-    FLOATING = auto()
-
-VAR_KIND_TO_FIELD_PREFIX = {VarKind.UNSIGNED: '', VarKind.SIGNED: 's', VarKind.FLOATING: 'f'}
 
 class Var(Varnode):
     kind: VarKind
@@ -33,6 +24,7 @@ class InputBool(Input): constraint_size = 1
 class PcodeLifter:
     def __init__(self, lifter: "Dragonlifter"):
         self.lifter = lifter
+        self.core = lifter.core
         self.used_temps: set[str] = set()
 
     def dispatch(self, pcode: Pcode) -> str:
@@ -65,25 +57,17 @@ class PcodeLifter:
         return f(*args)
 
 
-    def size_kind_to_type(self, size: int, kind: VarKind) -> str:
-        if kind == VarKind.FLOATING:
-            return MAP_FLOAT_SIZE_TO_TYPE[size]
-        t = MAP_INT_SIZE_TO_TYPE[size]
-        if kind == VarKind.UNSIGNED:
-            t = 'unsigned ' + t
-        return t
-    
-    def field_name(self, size: int, kind: VarKind) -> str:
-        return f'_{size}{VAR_KIND_TO_FIELD_PREFIX[kind]}'
+    def size_and_kind_to_type(self, size: int, kind: VarKind) -> str:
+        return self.core.size_and_kind_to_type(size, kind)
 
     def field(self, var: Var) -> str:
-        return self.field_name(var.size, var.kind)
+        return self.core.field_name(var.size, var.kind)
     
     def constant(self, var: Var) -> str:
         n = hex(var.value) if var.value >= 256 else str(var.value)
-        t = self.size_kind_to_type(var.size, var.kind)
+        t = self.size_and_kind_to_type(var.size, var.kind)
         if var.kind == VarKind.FLOATING:
-            return f'((varnode_t){{.{self.field_name(var.size, VarKind.UNSIGNED)}={n}}}).{self.field(var)}'
+            return f'((varnode_t){{.{self.core.field_name(var.size, VarKind.UNSIGNED)}={n}}}).{self.field(var)}'
         return f'(({t}){n})'
 
     def temp_var(self, var: Var) -> str:
@@ -163,17 +147,17 @@ class PcodeLifter:
 
     def _int_carry(self, out: OutputBool, in0: Input, in1: Input):
         assert in0.size == in1.size
-        return f'{self.var(out)} = ({self.size_kind_to_type(in0.size, VarKind.UNSIGNED)})({self.var(in0)} + {self.var(in1)}) < {self.var(in0)};'
+        return f'{self.var(out)} = ({self.size_and_kind_to_type(in0.size, VarKind.UNSIGNED)})({self.var(in0)} + {self.var(in1)}) < {self.var(in0)};'
 
     def _int_scarry(self, out: OutputBool, in0: InputSigned, in1: InputSigned):
         assert in0.size == in1.size
         # TODO: improve this
-        return f'{self.var(out)} = SIGN({self.var(in0)}) == SIGN({self.var(in1)}) && SIGN(({self.size_kind_to_type(in0.size, VarKind.SIGNED)})({self.var(in0)} + {self.var(in1)})) != SIGN({self.var(in1)});'
+        return f'{self.var(out)} = SIGN({self.var(in0)}) == SIGN({self.var(in1)}) && SIGN(({self.size_and_kind_to_type(in0.size, VarKind.SIGNED)})({self.var(in0)} + {self.var(in1)})) != SIGN({self.var(in1)});'
 
     def _int_sborrow(self, out: OutputBool, in0: InputSigned, in1: InputSigned):
         assert in0.size == in1.size
         # TODO: improve this
-        return f'{self.var(out)} = SIGN({self.var(in0)}) != SIGN({self.var(in1)}) && SIGN(({self.size_kind_to_type(in0.size, VarKind.SIGNED)})({self.var(in0)} - {self.var(in1)})) == SIGN({self.var(in1)});'
+        return f'{self.var(out)} = SIGN({self.var(in0)}) != SIGN({self.var(in1)}) && SIGN(({self.size_and_kind_to_type(in0.size, VarKind.SIGNED)})({self.var(in0)} - {self.var(in1)})) == SIGN({self.var(in1)});'
 
     def _int_2comp(self, out: OutputSigned, in0: InputSigned):
         assert in0.size == out.size
@@ -313,11 +297,11 @@ class PcodeLifter:
 
     def _piece(self, out: Output, in0: Input, in1: Input):
         assert in0.size + in1.size == out.size
-        return f'{self.var(out)} = {self.var(in0)} * {hex(2 ** (in1.size * BYTE_SIZE))} | {self.var(in1)};'
+        return f'{self.var(out)} = {self.var(in0)} * {hex(2 ** (in1.size * self.core.byte_size))} | {self.var(in1)};'
 
     def _subpiece(self, out: Output, in0: Input, in1: Input):
         assert in1.type == VarnodeType.CONSTANT
-        return f'{self.var(out)} = ({self.var(in0)} / {hex(2 ** (in1.value * BYTE_SIZE))});'
+        return f'{self.var(out)} = ({self.var(in0)} / {hex(2 ** (in1.value * self.core.byte_size))});'
 
     #def _cast(self): raise NotImplementedError("P-code CAST is not implemented yet.")
     #def _ptradd(self): raise NotImplementedError("P-code PTRADD is not implemented yet.")

@@ -101,31 +101,31 @@ class Op(IntEnum):
     EXTRACT = 71
     POPCOUNT = 72
 
-@dataclass
+@dataclass(frozen=True)
 class Varnode:
     type: VarnodeType
     value: int
     size: int
 
-@dataclass
+@dataclass(frozen=True)
 class Pcode:
     op: Op
     output: Varnode
     input: list[Varnode]
 
-@dataclass
+@dataclass(frozen=True)
 class Instruction:
     address: int
     asm: str
     pcodes: list[Pcode]
 
-@dataclass
+@dataclass(frozen=True)
 class Function:
     name: str
     address: int
     instructions: list[Instruction]
 
-@dataclass
+@dataclass(frozen=True)
 class BlockInfo:
     name: str
     address_space_id: int
@@ -134,27 +134,27 @@ class BlockInfo:
     @property
     def size(self): return self.end - self.start
 
-@dataclass
+@dataclass(frozen=True)
 class Memory:
     blocks_info: list[BlockInfo]
     compressed_buffer: str
 
-@dataclass
+@dataclass(frozen=True)
 class Register:
     name: str
     size: int
 
-@dataclass
+@dataclass(frozen=True)
 class RegistersBlock:
     offset: int
     registers: list[Register]
 
-@dataclass
+@dataclass(frozen=True)
 class AddressSpace:
     name: str
     id: int
 
-@dataclass
+@dataclass(frozen=True)
 class Program:
     functions: list[Function]
     op_names: list[str]

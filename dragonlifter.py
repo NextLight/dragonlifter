@@ -3,6 +3,7 @@ import sys
 import pathlib
 
 from ghidra_types import *
+from lifters.core_helper import CoreHelper
 from lifters.core_lifter import CoreLifter
 from lifters.function_lifter import FunctionLifter
 from lifters.instruction_lifter import InstructionLifter
@@ -17,12 +18,14 @@ class Dragonlifter:
             self,
             program: Program,
             *, 
+            CoreHelper: type[CoreHelper] = CoreHelper,
             CoreLifter: type[CoreLifter] = CoreLifter,
             ProgramLifter: type[ProgramLifter] = ProgramLifter,
             FunctionLifter: type[FunctionLifter] = FunctionLifter,
             InstructionLifter: type[InstructionLifter] = InstructionLifter,
             PcodeLifter: type[PcodeLifter] = PcodeLifter,
         ):
+        self.CoreHelper = CoreHelper
         self.CoreLifter = CoreLifter
         self.ProgramLifter = ProgramLifter
         self.FunctionLifter = FunctionLifter
@@ -30,7 +33,7 @@ class Dragonlifter:
         self.PcodeLifter = PcodeLifter
 
         self.program = program
-        self.core = self.CoreLifter(program)
+        self.core = self.CoreHelper(program)
 
     def lift(self, directory: str):
         self.ProgramLifter(self, self.program).emit(directory)
