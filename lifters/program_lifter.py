@@ -21,6 +21,7 @@ class ProgramLifter:
             with open(os.path.join(directory, f'{fun.name}.c'), 'w') as f:
                 self.emit_function(fun, CodeEmitter(f))
         core_lifter = self.lifter.CoreLifter(self.lifter)
+        core_lifter.setup()
         with open(os.path.join(directory, self.DRAGONLIFTER_H), 'w') as f:
             CodeEmitter(f).emit(core_lifter.lift_header())
         with open(os.path.join(directory, self.DRAGONLIFTER_C), 'w') as f:

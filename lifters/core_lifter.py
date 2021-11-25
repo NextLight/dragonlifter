@@ -14,17 +14,15 @@ class CoreLifter:
         self.lifter = lifter
         self.core = lifter.core
 
-        self.h_includes = []
-        self.c_includes = []
-        self.typedefs = []
-        self.h_fields = []
-        self.c_fields = []
-        self.defines = []
-        self.functions = []
-        self.h_body = []
-        self.c_body = []
-
-        self.setup()
+        self.h_includes: list[str] = []
+        self.c_includes: list[str] = []
+        self.typedefs: list[str] = []
+        self.h_fields: list[str] = []
+        self.c_fields: list[str] = []
+        self.defines: list[str] = []
+        self.functions: list[str] = []
+        self.h_body: list[str] = []
+        self.c_body: list[str] = []
 
 
     def lift_header(self) -> str:
@@ -61,7 +59,7 @@ class CoreLifter:
         ))
 
     def setup_math(self):
-        self.h_includes.append('#include <cmath>')
+        self.h_includes.append('#include <math.h>')
         self.defines.append(self.generate_math_defines())
 
     def setup_memory(self):
@@ -97,6 +95,18 @@ class CoreLifter:
             '#define RAM(addr) (*RAM_ADDR(addr))',
         ))
 
+    def setup_popcount(self):
+        self.defines.append('#define POPCOUNT(sz, v) _popcount8(v)')
+        # TODO: implement for different sizes to make it more efficent
+        self.functions.append('''
+            inline u8 _popcount8(u64 v) {
+                u8 o = 0;
+                for (; v; o++)
+                    v &= v - 1;
+                return o;
+            }
+        '''.strip())
+
 
     def generate_math_defines(self) -> str:
         return '\n'.join((
@@ -107,7 +117,6 @@ class CoreLifter:
             '#define CEIL(sz, v) ceil(v)',
             '#define FLOOR(sz, v) floor(v)',
             '#define ROUND(sz, v) round(v)',
-            '#define POPCOUNT(sz, v) _popcount8(v)',
         ))
 
     def generate_generic_typedefs(self) -> str:
@@ -146,7 +155,7 @@ class CoreLifter:
     def parse_ram_blocks(self, memory: Memory, *, max_blocks_join_distance = 64) -> tuple[bytearray, list["MemoryBlock"]]:
         dec = self.decompress_memory(memory.compressed_buffer)
 
-        blocks: list[self.MemoryBlock] = []
+        blocks: list[CoreLifter.MemoryBlock] = []
         mem = bytearray()
         pos = 0
         for b in memory.blocks_info:

@@ -1,6 +1,5 @@
 import pytest
 
-from dragonlifter import Dragonlifter
 pytest.main(['-x', '--ff', __file__])
 
 import io
@@ -10,12 +9,13 @@ import sys
 from typing import Type
 
 from code_emitter import CodeEmitter
+from dragonlifter import Dragonlifter
 from ghidra_types import *
-from lifters.pcode_lifter import MAP_FLOAT_SIZE_TO_TYPE, MAP_INT_SIZE_TO_TYPE, Output, OutputSigned, PcodeLifter, Var, VarKind
+from lifters.core_lifter import CoreLifter
+from lifters.pcode_lifter import Output, OutputSigned, PcodeLifter, Var, VarKind
 
 
 def setup_module():
-    print('aaaa')
     try:
         subprocess.check_call(['tcc', '-v'])
     except FileNotFoundError:
@@ -25,15 +25,6 @@ NaN = float('NaN')
 INF = float('inf')
 PRINTF_INT_STRING_FORMAT = {1: 'hh', 2: 'h', 4: '', 8: 'll'}
 PRINTF_FLOAT_STRING_FORMAT = {4: '', 8: '', 12: 'L'}
-
-def generate_var_size_kind_combinations():
-    for s in MAP_INT_SIZE_TO_TYPE:
-        yield s, VarKind.UNSIGNED
-        yield s, VarKind.SIGNED
-    for s in MAP_FLOAT_SIZE_TO_TYPE:
-        yield s, VarKind.FLOATING
-
-VAR_SIZE_KIND_COMBINATIONS = list(sorted(generate_var_size_kind_combinations(), key=lambda x: (x[0], x[1].name)))
 
 def printf_string_format(kind: VarKind, size: int) -> str:
     if kind == VarKind.SIGNED:
@@ -52,40 +43,23 @@ def run_c_code(code: bytes) -> str:
         raise e
 
 def run_pcodes(pcodes: list[Pcode], out_var: Var):
-    lifter = PcodeLifter(Dragonlifter._EMPTY)
+    dragonlifter = Dragonlifter._EMPTY
+    pcode_lifter = PcodeLifter(dragonlifter)
+    core_lifter = CoreLifter(dragonlifter)
+    core_lifter.setup_default_types()
+    core_lifter.setup_math()
+    core_lifter.setup_popcount()
 
     with io.StringIO() as out_c:
         p = CodeEmitter(out_c)
-        p.emit('#include <stdlib.h>')
-        p.emit('#include <stdio.h>')
-        p.emit('#include <math.h>')
-        p.emit('#define SIGN(e) ((e) >= 0)')
-        p.emit('#define ISNAN isnan')
-        # fabsf and fabsl do not work on windows using TCC (https://github.com/raysan5/raylib/issues/1159)
-        p.emit('#define FABS(n, v) fabs(v)')
-        p.emit('#define SQRT(n, v) sqrt(v)')
-        p.emit('#define CEIL(n, v) ceil(v)')
-        p.emit('#define FLOOR(n, v) floor(v)')
-        p.emit('#define ROUND(n, v) round(v)')
-        p.emit('#define POPCOUNT(n, v) _popcount8(v)')
-        p.emit('''
-            inline unsigned _popcount8(unsigned long long v) {
-                unsigned o = 0;
-                for (; v; o++)
-                    v &= v - 1;
-                return o;
-            }
-        ''')
-        p.emit('typedef union {')
-        for s, k in VAR_SIZE_KIND_COMBINATIONS:
-            p.emit(f'{lifter.size_kind_to_type(s, k)} {lifter.field_name(s, k)};')
-        p.emit('} varnode_t;')
+        p.emit(core_lifter.lift_header())
+        p.emit('')
         p.emit('int main() {')
-        c_code_lines = list(map(lifter.dispatch, pcodes))
-        p.emit(f'varnode_t {",".join(lifter.used_temps)};')
+        c_code_lines = list(map(pcode_lifter.dispatch, pcodes))
+        p.emit(f'varnode_t {",".join(pcode_lifter.used_temps)};')
         for c_code in c_code_lines:
             p.emit(c_code)
-        p.emit(f'printf("%{printf_string_format(out_var.kind, out_var.size)}", {lifter.var(out_var)});')
+        p.emit(f'printf("%{printf_string_format(out_var.kind, out_var.size)}", {pcode_lifter.var(out_var)});')
         p.emit(f'return 0;')
         p.emit('}')
 

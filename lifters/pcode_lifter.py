@@ -152,12 +152,20 @@ class PcodeLifter:
     def _int_scarry(self, out: OutputBool, in0: InputSigned, in1: InputSigned):
         assert in0.size == in1.size
         # TODO: improve this
-        return f'{self.var(out)} = SIGN({self.var(in0)}) == SIGN({self.var(in1)}) && SIGN(({self.size_and_kind_to_type(in0.size, VarKind.SIGNED)})({self.var(in0)} + {self.var(in1)})) != SIGN({self.var(in1)});'
+        return (
+            f'{self.var(out)} = '
+            f'SIGN({in0.size}, {self.var(in0)}) == SIGN({in1.size}, {self.var(in1)}) && '
+            f'SIGN({in0.size}, ({self.size_and_kind_to_type(in0.size, VarKind.SIGNED)})({self.var(in0)} + {self.var(in1)})) != SIGN({in1.size}, {self.var(in1)});'
+        )
 
     def _int_sborrow(self, out: OutputBool, in0: InputSigned, in1: InputSigned):
         assert in0.size == in1.size
         # TODO: improve this
-        return f'{self.var(out)} = SIGN({self.var(in0)}) != SIGN({self.var(in1)}) && SIGN(({self.size_and_kind_to_type(in0.size, VarKind.SIGNED)})({self.var(in0)} - {self.var(in1)})) == SIGN({self.var(in1)});'
+        return (
+            f'{self.var(out)} = '
+            f'SIGN({in0.size}, {self.var(in0)}) != SIGN({in1.size}, {self.var(in1)}) && '
+            f'SIGN({in0.size}, ({self.size_and_kind_to_type(in0.size, VarKind.SIGNED)})({self.var(in0)} - {self.var(in1)})) == SIGN({in1.size}, {self.var(in1)});'
+        )
 
     def _int_2comp(self, out: OutputSigned, in0: InputSigned):
         assert in0.size == out.size
@@ -240,7 +248,7 @@ class PcodeLifter:
         return f'{self.var(out)} = {self.var(in0)} <= {self.var(in1)};'
 
     def _float_nan(self, out: OutputBool, in0: InputFloating):
-        return f'{self.var(out)} = ISNAN({self.var(in0)});'
+        return f'{self.var(out)} = ISNAN({in0.size}, {self.var(in0)});'
 
     def _float_add(self, out: OutputFloating, in0: InputFloating, in1: InputFloating):
         assert in0.size == in1.size == out.size
