@@ -46,10 +46,16 @@ class CoreLifter:
     def setup(self):
         self.setup_default_types()
         self.setup_math()
+        self.setup_popcount()
         self.setup_memory()
+        self.setup_temp_variables()
+        self.setup_registers()
+        self.setup_function_declarations()
 
     def setup_default_types(self):
+        self.h_includes.append('#include <stddef.h>')
         self.h_includes.append('#include <stdint.h>')
+        self.h_includes.append('#include <assert.h>')
         self.typedefs.extend((
             self.generate_generic_typedefs(),
             '',
@@ -71,25 +77,25 @@ class CoreLifter:
         self.typedefs.append('typedef struct { address_t addr; byte * ptr; } memory_block_t;')
 
         self.h_fields.extend((
-            'byte memory[];',
-            'byte stack[];',
-            'const addr_to_ptr_t memory_blocks[];',
-            'const size_t memory_blocks_count',
+            'extern byte memory[];',
+            'extern byte stack[];',
+            'extern const memory_block_t memory_blocks[];',
+            'extern const size_t memory_blocks_count;',
         ))
         self.c_fields.extend((
             f'byte memory[] = {{ {",".join(str(b) for b in mem)} }};',
             f'byte stack[{self.core.stack_size}];',
-            f'const addr_to_ptr_t memory_blocks[] = {{ {", ".join(f"{{{l}, {r}}}" for l, r in memory_blocks)} }}',
+            f'const memory_block_t memory_blocks[] = {{ {", ".join(f"{{{l}, {r}}}" for l, r in memory_blocks)} }};',
             'const size_t memory_blocks_count = sizeof(memory_blocks) / sizeof(memory_blocks[0]);',
         ))
         self.functions.append('''
-            byte * find_memory_pos(address_t addr) {
+            static inline byte * find_memory_pos(address_t addr) {
                 for (size_t i = memory_blocks_count - 1; i >= 0; i--) {
                     if (memory_blocks[i].addr <= addr)
-                        return (byte *)memory_blocks[i].pos + addr - memory_blocks[i].addr;
+                        return (byte *)memory_blocks[i].ptr + addr - memory_blocks[i].addr;
                 }
                 assert(0);
-            }'''.strip()
+            }'''
         )
         self.defines.extend((
             '#define RAM_ADDR(addr) ((varnode_t*)find_memory_pos(addr))',
@@ -100,14 +106,33 @@ class CoreLifter:
         self.defines.append('#define POPCOUNT(sz, v) _popcount8(v)')
         # TODO: implement for different sizes to make it more efficent
         self.functions.append('''
-            inline u8 _popcount8(u64 v) {
+            static inline u8 _popcount8(u64 v) {
                 u8 o = 0;
                 for (; v; o++)
                     v &= v - 1;
                 return o;
-            }
-        '''.strip())
+            }'''
+        )
 
+    def setup_temp_variables(self):
+        fields = ', '.join(map(self.core.temp_variable, self.core.used_temp_variables))
+        self.h_fields.append(f'extern varnode_t {fields};')
+        self.c_fields.append(f'varnode_t {fields};')
+
+    def setup_registers(self):
+        max_register_off, registers_with_max_off = max(self.core.registers_from_offset.items())
+        max_register_address = max_register_off + max(r.size for r in registers_with_max_off)
+        self.h_fields.append(f'extern byte registers[];')
+        self.c_fields.append(f'byte registers[{max_register_address}];')
+        for off in self.core.used_registers_offset:
+            for r in self.core.registers_from_offset[off]:
+                for kind in VarKind:
+                    self.defines.append(f'#define {self.core.register_name(off, r.size, kind)} ((varnode_t*)&registers[{off}])->{self.core.field_name(r.size, kind)}')
+
+    def setup_function_declarations(self):
+        self.functions.append('')
+        for f in self.core.program.functions:
+            self.functions.append(f'extern void {f.name}();')
 
     def generate_math_defines(self) -> str:
         return '\n'.join((

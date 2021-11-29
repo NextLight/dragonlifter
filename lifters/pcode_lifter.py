@@ -102,7 +102,7 @@ class PcodeLifter:
         return f'{name}.{self.field(var)}'
 
     def register(self, var: Var) -> str:
-        return self.lifter.core.register_from_offset_and_size(var.value, var.size)
+        return self.lifter.core.register_name(var.value, var.size, var.kind)
 
     def var(self, var: Var) -> str:
         t = var.type
