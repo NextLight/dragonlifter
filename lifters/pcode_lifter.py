@@ -22,25 +22,37 @@ class OutputBool(Output): constraint_size = 1
 class InputBool(Input): constraint_size = 1
 
 class PcodeLifter:
-    def __init__(self, lifter: "Dragonlifter"):
+    def __init__(self, lifter: "Dragonlifter", pcode: Pcode, instruction_address: int, pcode_index: int):
         self.lifter = lifter
         self.core = lifter.core
-        self.used_temps: set[str] = set()
+        self.pcode = pcode
+        self.instruction_address = instruction_address
+        self.pcode_index = pcode_index
 
-    def dispatch(self, pcode: Pcode) -> str:
-        f: Callable[..., str] = getattr(self, f'_{pcode.op.name.lower()}', None)
-        if not f:
-            raise NotImplementedError(f'Opcode {pcode.op.name} is not implemented yet. {pcode=}')
+        self.referenced_pcode_labels: set[int] = set()
+
+    def lift(self) -> str:
+        f = self.find_pcode_lifter_function()
+        args = self.arguments_to_lifter_function(f)
+        return f(*args)
+
+    def find_pcode_lifter_function(self) -> Callable[..., str]:
+        try:
+            return getattr(self, f'_{self.pcode.op.name.lower()}')
+        except:
+            raise NotImplementedError(f'Opcode {self.pcode.op.name} is not implemented yet. {self.pcode}')
+
+    def arguments_to_lifter_function(self, f: Callable) -> list[Var]:
         args = []
         inputs_count = 0
         output_count = 0
         for name in f.__code__.co_varnames[1:f.__code__.co_argcount]:
             t = f.__annotations__[name]
             if issubclass(t, Output):
-                arg = t(**pcode.output.__dict__)
+                arg = t(**self.pcode.output.__dict__)
                 output_count += 1
             elif issubclass(t, Input):
-                arg = t(**pcode.input[inputs_count].__dict__)
+                arg = t(**self.pcode.input[inputs_count].__dict__)
                 inputs_count += 1
             else:
                 assert False
@@ -48,13 +60,13 @@ class PcodeLifter:
                 assert arg.size == arg.constraint_size, f"The size of the varnode was {arg.size} but should have been {arg.constraint_size}."
             args.append(arg)
         if output_count == 0:
-            assert pcode.output is None
+            assert self.pcode.output is None
         elif output_count == 1:
-            assert pcode.output is not None
+            assert self.pcode.output is not None
         else:
             assert False, "OPs cannot have multiple outputs"
-        assert len(pcode.input) == inputs_count
-        return f(*args)
+        assert len(self.pcode.input) == inputs_count
+        return args
 
 
     def size_and_kind_to_type(self, size: int, kind: VarKind) -> str:
@@ -62,6 +74,21 @@ class PcodeLifter:
 
     def field(self, var: Var) -> str:
         return self.core.field_name(var.size, var.kind)
+
+    def instruction_label(self, address: int):
+        return self.core.instruction_label(address)
+
+    def relative_pcode_label(self, delta: int):
+        idx = self.pcode_index + delta
+        self.referenced_pcode_labels.add(idx)
+        return self.core.pcode_label(self.instruction_address, idx)
+
+    def address_memory(self, space: Var, pointer_to_address: Var, size: int, kind: VarKind):
+        assert space.type == VarnodeType.CONSTANT
+        # TODO: handle the space ID
+        # TODO: multiply the address by the space ID wordsize
+        # TODO: assert that pointer_to_address.size == ptr size of the address space
+        return f'RAM({self.var(pointer_to_address)}).{self.core.field_name(size, kind)}'
     
     def constant(self, var: Var) -> str:
         n = hex(var.value) if var.value >= 256 else str(var.value)
@@ -71,8 +98,7 @@ class PcodeLifter:
         return f'(({t}){n})'
 
     def temp_var(self, var: Var) -> str:
-        name = f'temp_{var.value}'
-        self.used_temps.add(name)
+        name = self.core.temp_variable(var.value)
         return f'{name}.{self.field(var)}'
 
     def register(self, var: Var) -> str:
@@ -95,10 +121,23 @@ class PcodeLifter:
         assert out.size == in0.size
         return f'{self.var(out)} = {self.var(in0)};'
 
-    #def _load(self): raise NotImplementedError("P-code LOAD is not implemented yet.")
-    #def _store(self): raise NotImplementedError("P-code STORE is not implemented yet.")
-    #def _branch(self): raise NotImplementedError("P-code BRANCH is not implemented yet.")
-    #def _cbranch(self): raise NotImplementedError("P-code CBRANCH is not implemented yet.")
+    def _load(self, out: Output, in0: Input, in1: Input):
+        assert in0.type == VarnodeType.CONSTANT
+        return f'{self.var(out)} = {self.address_memory(in0, in1, out.size, out.kind)};'
+
+    def _store(self, in0: Input, in1: Input, in2: Input):
+        assert in0.type == VarnodeType.CONSTANT
+        return f'{self.address_memory(in0, in1, in2.size, in2.kind)} = {self.var(in2)};'
+
+    def _branch(self, in0: Input):
+        if in0.type == VarnodeType.RAM:
+            return f'goto {self.instruction_label(in0.value)};'
+        elif in0.type == VarnodeType.CONSTANT:
+            return f'goto {self.relative_pcode_label(in0.value)};'
+
+    def _cbranch(self, in0: Input, in1: Input):
+        return f'if ({self.var(in1)}) {self._branch(in0)}'
+
     #def _branchind(self): raise NotImplementedError("P-code BRANCHIND is not implemented yet.")
     #def _call(self): raise NotImplementedError("P-code CALL is not implemented yet.")
     #def _callind(self): raise NotImplementedError("P-code CALLIND is not implemented yet.")

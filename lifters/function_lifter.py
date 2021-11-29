@@ -11,7 +11,6 @@ class FunctionLifter:
     def __init__(self, lifter: "Dragonlifter", function: Function, *, pcode_lifter: PcodeLifter = None):
         self.lifter = lifter
         self.function = function
-        self.pcode_lifter = pcode_lifter or lifter.PcodeLifter(lifter)
     
     def lift(self) -> str:
         return '\n'.join((
@@ -37,4 +36,4 @@ class FunctionLifter:
         return f'void {self.function.name}()'
     
     def lift_instruction(self, instr: Instruction) -> str:
-        return self.lifter.InstructionLifter(self.lifter, instr, pcode_lifter = self.pcode_lifter).lift()
+        return self.lifter.InstructionLifter(self.lifter, instr).lift()

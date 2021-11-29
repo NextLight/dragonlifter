@@ -44,7 +44,6 @@ def run_c_code(code: bytes) -> str:
 
 def run_pcodes(pcodes: list[Pcode], out_var: Var):
     dragonlifter = Dragonlifter._EMPTY
-    pcode_lifter = PcodeLifter(dragonlifter)
     core_lifter = CoreLifter(dragonlifter)
     core_lifter.setup_default_types()
     core_lifter.setup_math()
@@ -55,11 +54,12 @@ def run_pcodes(pcodes: list[Pcode], out_var: Var):
         p.emit(core_lifter.lift_header())
         p.emit('')
         p.emit('int main() {')
-        c_code_lines = list(map(pcode_lifter.dispatch, pcodes))
-        p.emit(f'varnode_t {",".join(pcode_lifter.used_temps)};')
-        for c_code in c_code_lines:
-            p.emit(c_code)
-        p.emit(f'printf("%{printf_string_format(out_var.kind, out_var.size)}", {pcode_lifter.var(out_var)});')
+        c_code_lines = [PcodeLifter(dragonlifter, pcode, 0, i).lift() for i, pcode in enumerate(pcodes)]
+        p.emit(f'varnode_t {",".join(map(dragonlifter.core.temp_variable, dragonlifter.core.used_temp_variables))};')
+        for i, c_code in enumerate(c_code_lines):
+            p.emit(f'{dragonlifter.core.pcode_label(0, i)}: {c_code}')
+        tmp_pcode_lifter = PcodeLifter(dragonlifter, pcodes[0], 0, 0)
+        p.emit(f'printf("%{printf_string_format(out_var.kind, out_var.size)}", {tmp_pcode_lifter.var(out_var)});')
         p.emit(f'return 0;')
         p.emit('}')
 

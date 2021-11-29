@@ -18,6 +18,8 @@ class CoreHelper:
         }
         self.address_space_name_to_id = {name: id for name, id in program.address_spaces}
 
+        self.used_temp_variables: set[int] = set()
+
     varnode_type_name = 'varnode_t'
     address_type_name = 'address_t'
     funcptr_type_name = 'funcptr_t'
@@ -52,8 +54,12 @@ class CoreHelper:
     def register_from_offset_and_size(self, offset: int, size: int) -> str:
         return self.register_offset_and_size_to_name[(offset, size)]
 
-    def address_label(self, address: int) -> str:
+    def instruction_label(self, address: int) -> str:
         return f'ADDR_{address:X}'
 
+    def pcode_label(self, address: int, pcode_index: int) -> str:
+        return f'PCODE_{address:X}_{pcode_index}'
+
     def temp_variable(self, id: int) -> str:
+        self.used_temp_variables.add(id)
         return f'temp_{id}'
