@@ -16,8 +16,9 @@ class CoreHelper:
             for rb in program.registers_blocks
             for r in rb.registers
         }
-        self.registers_from_offset = {b.offset: b.registers for b in self.program.registers_blocks}
+        self.registers_from_offset = {b.offset: b.registers for b in program.registers_blocks}
         self.address_space_name_to_id = {name: id for name, id in program.address_spaces}
+        self.address_to_function = {f.address: f for f in program.functions}
 
         self.used_registers_offset: set[int] = set()
         self.used_temp_variables: set[int] = set()
@@ -53,6 +54,9 @@ class CoreHelper:
     def register_name(self, offset: int, size: int, kind: VarKind) -> str:
         self.used_registers_offset.add(offset)
         return f'{self.register_offset_and_size_to_name[(offset, size)]}{self.var_kind_to_field_suffix[kind]}'
+
+    def function(self, address: int) -> Function:
+        return self.address_to_function[address]
 
     def size_and_kind_to_type(self, size: int, kind: VarKind) -> str:
         return self.available_types[(kind, size)]

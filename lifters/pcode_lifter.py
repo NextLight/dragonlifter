@@ -139,10 +139,18 @@ class PcodeLifter:
         return f'if ({self.var(in1)}) {self._branch(in0)}'
 
     #def _branchind(self): raise NotImplementedError("P-code BRANCHIND is not implemented yet.")
-    #def _call(self): raise NotImplementedError("P-code CALL is not implemented yet.")
+
+    def _call(self, in0: Input):
+        assert in0.type == VarnodeType.RAM
+        # TODO: fallback to a BRANCH if the function could not be found.
+        return f'{self.core.function(in0.value).name}();'
+
     #def _callind(self): raise NotImplementedError("P-code CALLIND is not implemented yet.")
     #def _callother(self): raise NotImplementedError("P-code CALLOTHER is not implemented yet.")
-    #def _return(self): raise NotImplementedError("P-code RETURN is not implemented yet.")
+
+    def _return(self, in0: Input):
+        # TODO: this should work most of the times, but the always correct implementation is a BRANCHIND.
+        return 'return;'
 
     def _int_equal(self, out: OutputBool, in0: Input, in1: Input):
         assert in0.size == in1.size
