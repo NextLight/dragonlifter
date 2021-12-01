@@ -51,6 +51,7 @@ class CoreLifter:
         self.setup_temp_variables()
         self.setup_registers()
         self.setup_function_declarations()
+        self.setup_callother()
 
     def setup_default_types(self):
         self.h_includes.append('#include <stddef.h>')
@@ -124,15 +125,21 @@ class CoreLifter:
         max_register_address = max_register_off + max(r.size for r in registers_with_max_off)
         self.h_fields.append(f'extern byte registers[];')
         self.c_fields.append(f'byte registers[{max_register_address}];')
+        self.defines.append('')
         for off in self.core.used_registers_offset:
             for r in self.core.registers_from_offset[off]:
                 for kind in VarKind:
                     self.defines.append(f'#define {self.core.register_name(off, r.size, kind)} ((varnode_t*)&registers[{off}])->{self.core.field_name(r.size, kind)}')
+        self.defines.append('')
 
     def setup_function_declarations(self):
         self.functions.append('')
         for f in self.core.program.functions:
             self.functions.append(f'extern void {f.name}();')
+
+    def setup_callother(self):
+        self.defines.append('#define CALLOTHER(f, ...) CALLOTHER_##f(__VA_ARGS__)')
+
 
     def generate_math_defines(self) -> str:
         return '\n'.join((

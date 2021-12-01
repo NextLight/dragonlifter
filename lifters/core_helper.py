@@ -54,6 +54,9 @@ class CoreHelper:
     def register_name(self, offset: int, size: int, kind: VarKind) -> str:
         self.used_registers_offset.add(offset)
         return f'{self.register_offset_and_size_to_name[(offset, size)]}{self.var_kind_to_field_suffix[kind]}'
+    
+    def op_name(self, id: int) -> str:
+        return self.program.op_names[id]
 
     def function(self, address: int) -> Function:
         return self.address_to_function[address]

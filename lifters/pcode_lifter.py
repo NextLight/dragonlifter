@@ -1,5 +1,4 @@
 import typing
-from enum import Enum, auto
 from typing import Callable, Optional
 
 if typing.TYPE_CHECKING:
@@ -33,7 +32,7 @@ class PcodeLifter:
 
     def lift(self) -> str:
         f = self.find_pcode_lifter_function()
-        args = self.arguments_to_lifter_function(f)
+        args = self.arguments_for_lifter_function(f)
         return f(*args)
 
     def find_pcode_lifter_function(self) -> Callable[..., str]:
@@ -42,13 +41,22 @@ class PcodeLifter:
         except:
             raise NotImplementedError(f'Opcode {self.pcode.op.name} is not implemented yet. {self.pcode}')
 
-    def arguments_to_lifter_function(self, f: Callable) -> list[Var]:
-        args = []
+    def arguments_for_lifter_function(self, f: Callable) -> list:
+        args: list = []
         inputs_count = 0
         output_count = 0
-        for name in f.__code__.co_varnames[1:f.__code__.co_argcount]:
-            t = f.__annotations__[name]
-            if issubclass(t, Output):
+        for t in self.function_parameters(f):
+            arg: Optional[Output] | Input | list[Input]
+            if t == Optional[Output]:
+                if self.pcode.output is not None:
+                    arg = Output(**self.pcode.output.__dict__)
+                    output_count += 1
+                else:
+                    arg = None
+            elif t == list[Input]:
+                arg = [Input(**i.__dict__) for i in self.pcode.input[inputs_count:]]
+                inputs_count += len(self.pcode.input[inputs_count:])
+            elif issubclass(t, Output):
                 arg = t(**self.pcode.output.__dict__)
                 output_count += 1
             elif issubclass(t, Input):
@@ -56,7 +64,7 @@ class PcodeLifter:
                 inputs_count += 1
             else:
                 assert False
-            if arg.constraint_size is not None:
+            if isinstance(arg, Var) and arg.constraint_size is not None:
                 assert arg.size == arg.constraint_size, f"The size of the varnode was {arg.size} but should have been {arg.constraint_size}."
             args.append(arg)
         if output_count == 0:
@@ -67,6 +75,9 @@ class PcodeLifter:
             assert False, "OPs cannot have multiple outputs"
         assert len(self.pcode.input) == inputs_count
         return args
+
+    def function_parameters(self, f: Callable):
+        return tuple(f.__annotations__[name] for name in f.__code__.co_varnames[1:f.__code__.co_argcount])
 
 
     def size_and_kind_to_type(self, size: int, kind: VarKind) -> str:
@@ -146,7 +157,13 @@ class PcodeLifter:
         return f'{self.core.function(in0.value).name}();'
 
     #def _callind(self): raise NotImplementedError("P-code CALLIND is not implemented yet.")
-    #def _callother(self): raise NotImplementedError("P-code CALLOTHER is not implemented yet.")
+
+    def _callother(self, out: Optional[Output], in0: Input, other_inputs: list[Input]):
+        assert in0.type == VarnodeType.CONSTANT
+        name = self.core.op_name(in0.value)
+        inputs = [name] + [self.var(i) for i in other_inputs]
+        prefix = f'{self.var(out)} = ' if out else ''
+        return f'{prefix}CALLOTHER({", ".join(inputs)});'
 
     def _return(self, in0: Input):
         # TODO: this should work most of the times, but the always correct implementation is a BRANCHIND.
