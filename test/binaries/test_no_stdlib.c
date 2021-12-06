@@ -202,6 +202,34 @@ void calc_bitwise() {
     print(int_to_string(a), "(", bin(a), ") ", op, " ", int_to_string(b), "(", bin(b), ") = ", int_to_string(res), "(", bin(res), ")");
 }
 
+int get_square() {
+    int n = string_to_int(input_prompt("Insert a number to square: "));
+    switch (n) {
+    case 1:  return 1*1;
+    case 2:  return 2*2;
+    case 3:  return 3*3;
+    case 4:  return 4*4;
+    case 5:  return 5*5;
+    case 6:  return 6*6;
+    case 7:  return 7*7;
+    case 8:  return 8*8;
+    case 9:  return 9*9;
+    case 10: return 10*10;
+    case 11: return 11*11;
+    case 12: return 12*12;
+    case 13: return 13*13;
+    case 14: return 14*14;
+    case 15: return 15*15;
+    case 16: return 16*16;
+    case 17: return 17*17;
+    case 18: return 18*18;
+    case 19: return 19*19;
+    case 20: return 20*20;
+    case 21: return 21*21;
+    }
+    return -1;
+}
+
 int _start() {
     char buf[32];
     print("ciao!");
@@ -211,14 +239,12 @@ int _start() {
     a /= 3;
     print(int_to_string(a));
     print(int_to_string(-a));
-        print_raw("Insert a number: ");
-    char * in = input();
-    print_raw("Your number was ");
-    print(in);
+    char * in = input_prompt("Insert a number: ");
+    print("Your number was ", in);
     int n = string_to_int(in);
-    print_raw("Your number times 2 is equal to ");
-    print(int_to_string(n * 2));
+    print("Your number times 2 is equal to ", int_to_string(n * 2));
     calc();
     calc_bitwise();
+    print("Square: ", int_to_string(get_square()));
     exit(42);
 }

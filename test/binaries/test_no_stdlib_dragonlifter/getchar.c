@@ -1,29 +1,31 @@
 #include "dragonlifter.h"
 
 void getchar() {
-	ADDR_400309:; // PUSH RBP
+	ADDR_1011DA:; // ENDBR64
+	
+	ADDR_1011DE:; // PUSH RBP
 	temp_59264._8 = RBP;
 	RSP = RSP - ((u64)8);
 	RAM(RSP)._8 = temp_59264._8;
-	ADDR_40030A:; // MOV RBP,RSP
+	ADDR_1011DF:; // MOV RBP,RSP
 	RBP = RSP;
-	ADDR_40030D:; // MOV EDX,0x1
+	ADDR_1011E2:; // MOV EDX,0x1
 	RDX = ((u64)1);
-	ADDR_400312:; // LEA RSI,[0x601000]
-	RSI = ((u64)0x601000);
-	ADDR_400319:; // MOV EDI,0x0
+	ADDR_1011E7:; // LEA RSI,[0x104000]
+	RSI = ((u64)0x104000);
+	ADDR_1011EE:; // MOV EDI,0x0
 	RDI = ((u64)0);
-	ADDR_40031E:; // CALL 0x0040016c
+	ADDR_1011F3:; // CALL 0x0010102c
 	RSP = RSP - ((u64)8);
-	RAM(RSP)._8 = ((u64)0x400323);
+	RAM(RSP)._8 = ((u64)0x1011f8);
 	read();
-	ADDR_400323:; // MOVZX EAX,byte ptr [0x00601000]
-	EAX = RAM(6295552)._1;
+	ADDR_1011F8:; // MOVZX EAX,byte ptr [0x00104000]
+	EAX = RAM(1064960)._1;
 	RAX = EAX;
-	ADDR_40032A:; // POP RBP
+	ADDR_1011FF:; // POP RBP
 	RBP = RAM(RSP)._8;
 	RSP = RSP + ((u64)8);
-	ADDR_40032B:; // RET
+	ADDR_101200:; // RET
 	RIP = RAM(RSP)._8;
 	RSP = RSP + ((u64)8);
 	return;

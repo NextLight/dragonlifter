@@ -8,16 +8,16 @@ typedef int8_t i8;
 typedef int16_t i16;
 typedef int32_t i32;
 typedef int64_t i64;
-typedef __int128_t i128;
 typedef uint8_t u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
 typedef uint64_t u64;
-typedef __uint128_t u128;
 typedef float f32;
 typedef double f64;
 typedef long double f80;
 typedef uint8_t byte;
+typedef __int128_t i128;
+typedef __uint128_t u128;
 
 typedef u64 address_t;
 typedef void (*funcptr_t)();
@@ -38,14 +38,17 @@ typedef union {
 	f80 _10f;
 } varnode_t;
 typedef struct { address_t addr; byte * ptr; } memory_block_t;
+typedef struct { address_t addr; funcptr_t func; } addr_to_func_t;
 
 
 extern byte memory[];
 extern byte stack[];
 extern const memory_block_t memory_blocks[];
 extern const size_t memory_blocks_count;
-extern varnode_t temp_76800, temp_364544, temp_12800, temp_164352, temp_90624, temp_217600, temp_13312, temp_91136, temp_78848, temp_79360, temp_213504, temp_86912, temp_214016, temp_91392, temp_87424, temp_165376, temp_87936, temp_51200, temp_80000, temp_92416, temp_88448, temp_51712, temp_47744, temp_220032, temp_52224, temp_89472, temp_48768, temp_89984, temp_48256, temp_76928, temp_53376, temp_77952, temp_90752, temp_78464, temp_91264, temp_50816, temp_91776, temp_333440, temp_86016, temp_213120, temp_86528, temp_332288, temp_357120, temp_78592, temp_340736, temp_332800, temp_79104, temp_333312, temp_79616, temp_88064, temp_162048, temp_88576, temp_89088, temp_163072, temp_220672, temp_77696, temp_12544, temp_48384, temp_77056, temp_47872, temp_90368, temp_78080, temp_86272, temp_13056, temp_21248, temp_164608, temp_86144, temp_213248, temp_86656, temp_213760, temp_332928, temp_87680, temp_79744, temp_259968, temp_92160, temp_51456, temp_88704, temp_80768, temp_89216, temp_220288, temp_52992, temp_59264, temp_48512, temp_90496, temp_217472, temp_357248, temp_91008, temp_78720, temp_340864, temp_79232, temp_92032, temp_77824, temp_213376, temp_217856, temp_86784, temp_160768, temp_87296, temp_214400, temp_87808, temp_79872, temp_92288, temp_88832, temp_219904, temp_89344, temp_48640, temp_77440, temp_89856, temp_53120;
+extern varnode_t temp_76800, temp_364544, temp_12800, temp_164352, temp_90624, temp_13312, temp_91136, temp_78848, temp_226304, temp_79360, temp_213504, temp_86912, temp_214016, temp_91392, temp_87424, temp_165376, temp_13952, temp_87936, temp_51200, temp_80000, temp_358528, temp_92416, temp_88448, temp_51712, temp_47744, temp_220032, temp_52224, temp_89472, temp_48768, temp_89984, temp_48256, temp_76928, temp_53376, temp_77952, temp_90752, temp_78464, temp_91264, temp_50816, temp_91776, temp_333440, temp_86016, temp_213120, temp_86528, temp_332288, temp_78592, temp_340736, temp_332800, temp_79104, temp_226560, temp_333312, temp_79616, temp_227072, temp_88064, temp_358656, temp_162048, temp_88576, temp_89088, temp_163072, temp_220672, temp_77696, temp_12544, temp_48384, temp_77056, temp_47872, temp_90368, temp_78080, temp_13056, temp_21248, temp_164608, temp_357120, temp_86144, temp_213248, temp_86656, temp_213760, temp_340864, temp_332928, temp_87680, temp_79744, temp_259968, temp_92160, temp_51456, temp_88704, temp_80768, temp_89216, temp_220288, temp_52992, temp_59264, temp_48512, temp_90496, temp_357248, temp_91008, temp_78720, temp_226176, temp_79232, temp_226688, temp_92032, temp_77824, temp_86272, temp_213376, temp_86784, temp_160768, temp_87296, temp_214400, temp_87808, temp_79872, temp_92288, temp_88832, temp_219904, temp_89344, temp_48640, temp_77440, temp_89856, temp_53120;
 extern byte registers[];
+extern const addr_to_func_t functions[];
+extern const size_t functions_count;
 
 
 #define SIGN(sz, v) ((v) >= 0)
@@ -396,6 +399,7 @@ extern byte registers[];
 #define YMM7s ((varnode_t*)&registers[4832])->_32s
 #define YMM7f ((varnode_t*)&registers[4832])->_32f
 
+#define CALL_FUNCTION_AT(addr) function_binary_search(functions, functions_count, addr)()
 #define CALLOTHER(f, ...) CALLOTHER_##f(__VA_ARGS__)
 
 
@@ -431,20 +435,21 @@ extern void bitwise_and();
 extern void bitwise_or();
 extern void bitwise_xor();
 extern void calc_bitwise();
+extern void get_square();
 extern void _start();
 
-#include "syscalls.h"
-#define CALLOTHER_syscall() __dispatch_syscall(RAX)
-/*static inline void CALLOTHER_syscall()
-{
-    register u8 rax __asm__ ("rax") = RAX;
-    register u8 rdi __asm__ ("rdi") = RDI;
-    register u8 rsi __asm__ ("rsi") = RSI;
-    __asm__ __volatile__ (
-        "syscall"
-        : "+r" (rax)
-        : "r" (rdi), "r" (rsi)
-        : "rcx", "r11", "memory"
-    );
-    RAX = rax;
-}*/
+static inline funcptr_t function_binary_search(const addr_to_func_t * arr, size_t size, address_t addr) {
+	size_t l = 0, r = size;
+	while (l < r) {
+		size_t m = (l + r) / 2;
+		if (arr[m].addr == addr)
+		return arr[m].func;
+		else if (arr[m].addr > addr)
+		r = m;
+		else
+		l = m + 1;
+	}
+	// assert(0);
+}
+
+#include "dragonlifter_user.h"

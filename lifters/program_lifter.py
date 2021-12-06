@@ -23,7 +23,10 @@ class ProgramLifter:
         core_lifter = self.lifter.CoreLifter(self.lifter)
         core_lifter.setup()
         with open(os.path.join(directory, self.DRAGONLIFTER_H), 'w') as f:
-            CodeEmitter(f).emit(core_lifter.lift_header())
+            emitter = CodeEmitter(f)
+            emitter.emit(core_lifter.lift_header())
+            emitter.emit('')
+            emitter.emit('#include "dragonlifter_user.h"')
         with open(os.path.join(directory, self.DRAGONLIFTER_C), 'w') as f:
             emitter = CodeEmitter(f)
             emitter.emit(self.generate_imports())

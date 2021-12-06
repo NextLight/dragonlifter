@@ -1,13 +1,15 @@
 #include "dragonlifter.h"
 
 void input() {
-	ADDR_40032C:; // PUSH RBP
+	ADDR_101201:; // ENDBR64
+	
+	ADDR_101205:; // PUSH RBP
 	temp_59264._8 = RBP;
 	RSP = RSP - ((u64)8);
 	RAM(RSP)._8 = temp_59264._8;
-	ADDR_40032D:; // MOV RBP,RSP
+	ADDR_101206:; // MOV RBP,RSP
 	RBP = RSP;
-	ADDR_400330:; // SUB RSP,0x10
+	ADDR_101209:; // SUB RSP,0x10
 	CF = RSP < ((u64)16);
 	OF = SIGN(8, RSPs) != SIGN(8, ((i64)16)) && SIGN(8, (i64)(RSPs - ((i64)16))) == SIGN(8, ((i64)16));
 	RSP = RSP - ((u64)16);
@@ -17,14 +19,14 @@ void input() {
 	temp_76928._1 = POPCOUNT(8, temp_76800._8);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_400334:; // MOV EAX,dword ptr [0x00601004]
-	EAX = RAM(6295556)._4;
+	ADDR_10120D:; // MOV EAX,dword ptr [0x00104004]
+	EAX = RAM(1064964)._4;
 	RAX = EAX;
-	ADDR_40033A:; // MOVSXD RDX,EAX
-	RDXs = EAXs;
-	ADDR_40033D:; // LEA RAX,[0x601020]
-	RAX = ((u64)0x601020);
-	ADDR_400344:; // ADD RAX,RDX
+	ADDR_101213:; // CDQE
+	RAXs = EAXs;
+	ADDR_101215:; // LEA RDX,[0x104020]
+	RDX = ((u64)0x104020);
+	ADDR_10121C:; // ADD RAX,RDX
 	CF = (u64)(RAX + RDX) < RAX;
 	OF = SIGN(8, RAXs) == SIGN(8, RDXs) && SIGN(8, (i64)(RAXs + RDXs)) != SIGN(8, RDXs);
 	RAX = RAX + RDX;
@@ -34,46 +36,46 @@ void input() {
 	temp_76928._1 = POPCOUNT(8, temp_76800._8);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_400347:; // MOV qword ptr [RBP + -0x8],RAX
+	ADDR_10121F:; // MOV qword ptr [RBP + -0x8],RAX
 	temp_12544._8 = RBP + ((u64)-8);
 	temp_48512._8 = RAX;
 	RAM(temp_12544._8)._8 = temp_48512._8;
-	ADDR_40034B:; // JMP 0x0040036d
-	goto ADDR_40036D;
-	ADDR_40034D:; // MOV EAX,dword ptr [0x00601004]
-	EAX = RAM(6295556)._4;
+	ADDR_101223:; // JMP 0x00101244
+	goto ADDR_101244;
+	ADDR_101225:; // MOV EAX,dword ptr [0x00104004]
+	EAX = RAM(1064964)._4;
 	RAX = EAX;
-	ADDR_400353:; // LEA EDX,[RAX + 0x1]
+	ADDR_10122B:; // LEA EDX,[RAX + 0x1]
 	temp_12544._8 = RAX + ((u64)1);
 	EDX = (temp_12544._8 / 0x1);
 	RDX = EDX;
-	ADDR_400356:; // MOV dword ptr [0x00601004],EDX
-	RAM(6295556)._4 = EDX;
-	ADDR_40035C:; // MOVSXD RDX,EAX
-	RDXs = EAXs;
-	ADDR_40035F:; // LEA RAX,[0x601020]
-	RAX = ((u64)0x601020);
-	ADDR_400366:; // MOVZX ECX,byte ptr [RBP + -0x9]
+	ADDR_10122E:; // MOV dword ptr [0x00104004],EDX
+	RAM(1064964)._4 = EDX;
+	ADDR_101234:; // CDQE
+	RAXs = EAXs;
+	ADDR_101236:; // LEA RCX,[0x104020]
+	RCX = ((u64)0x104020);
+	ADDR_10123D:; // MOVZX EDX,byte ptr [RBP + -0x9]
 	temp_12544._8 = RBP + ((u64)-9);
 	temp_47872._1 = RAM(temp_12544._8)._1;
-	ECX = temp_47872._1;
-	RCX = ECX;
-	ADDR_40036A:; // MOV byte ptr [RDX + RAX*0x1],CL
-	temp_13056._8 = RAX * ((u64)1);
-	temp_13312._8 = RDX + temp_13056._8;
-	temp_47744._1 = CL;
+	EDX = temp_47872._1;
+	RDX = EDX;
+	ADDR_101241:; // MOV byte ptr [RAX + RCX*0x1],DL
+	temp_13056._8 = RCX * ((u64)1);
+	temp_13312._8 = RAX + temp_13056._8;
+	temp_47744._1 = DL;
 	RAM(temp_13312._8)._1 = temp_47744._1;
-	ADDR_40036D:; // MOV EAX,0x0
+	ADDR_101244:; // MOV EAX,0x0
 	RAX = ((u64)0);
-	ADDR_400372:; // CALL 0x00400309
+	ADDR_101249:; // CALL 0x001011da
 	RSP = RSP - ((u64)8);
-	RAM(RSP)._8 = ((u64)0x400377);
+	RAM(RSP)._8 = ((u64)0x10124e);
 	getchar();
-	ADDR_400377:; // MOV byte ptr [RBP + -0x9],AL
+	ADDR_10124E:; // MOV byte ptr [RBP + -0x9],AL
 	temp_12544._8 = RBP + ((u64)-9);
 	temp_47744._1 = AL;
 	RAM(temp_12544._8)._1 = temp_47744._1;
-	ADDR_40037A:; // CMP byte ptr [RBP + -0x9],0x1f
+	ADDR_101251:; // CMP byte ptr [RBP + -0x9],0x1f
 	temp_12544._8 = RBP + ((u64)-9);
 	temp_47872._1 = RAM(temp_12544._8)._1;
 	CF = temp_47872._1 < ((u8)31);
@@ -87,38 +89,38 @@ void input() {
 	temp_76928._1 = POPCOUNT(1, temp_76800._1);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_40037E:; // JG 0x0040034d
+	ADDR_101255:; // JG 0x00101225
 	temp_52992._1 = !ZF;
 	temp_53120._1 = OF == SF;
 	temp_53376._1 = temp_52992._1 && temp_53120._1;
-	if (temp_53376._1) goto ADDR_40034D;
-	ADDR_400380:; // MOV EAX,dword ptr [0x00601004]
-	EAX = RAM(6295556)._4;
+	if (temp_53376._1) goto ADDR_101225;
+	ADDR_101257:; // MOV EAX,dword ptr [0x00104004]
+	EAX = RAM(1064964)._4;
 	RAX = EAX;
-	ADDR_400386:; // LEA EDX,[RAX + 0x1]
+	ADDR_10125D:; // LEA EDX,[RAX + 0x1]
 	temp_12544._8 = RAX + ((u64)1);
 	EDX = (temp_12544._8 / 0x1);
 	RDX = EDX;
-	ADDR_400389:; // MOV dword ptr [0x00601004],EDX
-	RAM(6295556)._4 = EDX;
-	ADDR_40038F:; // MOVSXD RDX,EAX
-	RDXs = EAXs;
-	ADDR_400392:; // LEA RAX,[0x601020]
-	RAX = ((u64)0x601020);
-	ADDR_400399:; // MOV byte ptr [RDX + RAX*0x1],0x0
-	temp_13056._8 = RAX * ((u64)1);
-	temp_13312._8 = RDX + temp_13056._8;
+	ADDR_101260:; // MOV dword ptr [0x00104004],EDX
+	RAM(1064964)._4 = EDX;
+	ADDR_101266:; // CDQE
+	RAXs = EAXs;
+	ADDR_101268:; // LEA RDX,[0x104020]
+	RDX = ((u64)0x104020);
+	ADDR_10126F:; // MOV byte ptr [RAX + RDX*0x1],0x0
+	temp_13056._8 = RDX * ((u64)1);
+	temp_13312._8 = RAX + temp_13056._8;
 	temp_47872._1 = ((u8)0);
 	RAM(temp_13312._8)._1 = temp_47872._1;
-	ADDR_40039D:; // MOV RAX,qword ptr [RBP + -0x8]
+	ADDR_101273:; // MOV RAX,qword ptr [RBP + -0x8]
 	temp_12544._8 = RBP + ((u64)-8);
 	temp_48512._8 = RAM(temp_12544._8)._8;
 	RAX = temp_48512._8;
-	ADDR_4003A1:; // LEAVE
+	ADDR_101277:; // LEAVE
 	RSP = RBP;
 	RBP = RAM(RSP)._8;
 	RSP = RSP + ((u64)8);
-	ADDR_4003A2:; // RET
+	ADDR_101278:; // RET
 	RIP = RAM(RSP)._8;
 	RSP = RSP + ((u64)8);
 	return;

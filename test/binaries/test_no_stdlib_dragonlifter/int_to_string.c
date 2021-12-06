@@ -1,24 +1,26 @@
 #include "dragonlifter.h"
 
 void int_to_string() {
-	ADDR_4003D2:; // PUSH RBP
+	ADDR_1012AC:; // ENDBR64
+	
+	ADDR_1012B0:; // PUSH RBP
 	temp_59264._8 = RBP;
 	RSP = RSP - ((u64)8);
 	RAM(RSP)._8 = temp_59264._8;
-	ADDR_4003D3:; // MOV RBP,RSP
+	ADDR_1012B1:; // MOV RBP,RSP
 	RBP = RSP;
-	ADDR_4003D6:; // MOV dword ptr [RBP + -0x24],EDI
+	ADDR_1012B4:; // MOV dword ptr [RBP + -0x24],EDI
 	temp_12544._8 = RBP + ((u64)-36);
 	temp_48256._4 = EDI;
 	RAM(temp_12544._8)._4 = temp_48256._4;
-	ADDR_4003D9:; // MOV EAX,dword ptr [0x00601820]
-	EAX = RAM(6297632)._4;
+	ADDR_1012B7:; // MOV EAX,dword ptr [0x00104820]
+	EAX = RAM(1067040)._4;
 	RAX = EAX;
-	ADDR_4003DF:; // MOV dword ptr [RBP + -0xc],EAX
+	ADDR_1012BD:; // MOV dword ptr [RBP + -0xc],EAX
 	temp_12544._8 = RBP + ((u64)-12);
 	temp_48256._4 = EAX;
 	RAM(temp_12544._8)._4 = temp_48256._4;
-	ADDR_4003E2:; // CMP dword ptr [RBP + -0x24],0x0
+	ADDR_1012C0:; // CMP dword ptr [RBP + -0x24],0x0
 	temp_12544._8 = RBP + ((u64)-36);
 	temp_48384._4 = RAM(temp_12544._8)._4;
 	CF = temp_48384._4 < ((u32)0);
@@ -32,55 +34,55 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_4003E6:; // JNZ 0x00400437
+	ADDR_1012C4:; // JNZ 0x00101312
 	temp_50816._1 = !ZF;
-	if (temp_50816._1) goto ADDR_400437;
-	ADDR_4003E8:; // MOV EAX,dword ptr [0x00601820]
-	EAX = RAM(6297632)._4;
+	if (temp_50816._1) goto ADDR_101312;
+	ADDR_1012C6:; // MOV EAX,dword ptr [0x00104820]
+	EAX = RAM(1067040)._4;
 	RAX = EAX;
-	ADDR_4003EE:; // LEA EDX,[RAX + 0x1]
+	ADDR_1012CC:; // LEA EDX,[RAX + 0x1]
 	temp_12544._8 = RAX + ((u64)1);
 	EDX = (temp_12544._8 / 0x1);
 	RDX = EDX;
-	ADDR_4003F1:; // MOV dword ptr [0x00601820],EDX
-	RAM(6297632)._4 = EDX;
-	ADDR_4003F7:; // MOVSXD RDX,EAX
-	RDXs = EAXs;
-	ADDR_4003FA:; // LEA RAX,[0x601840]
-	RAX = ((u64)0x601840);
-	ADDR_400401:; // MOV byte ptr [RDX + RAX*0x1],0x30
-	temp_13056._8 = RAX * ((u64)1);
-	temp_13312._8 = RDX + temp_13056._8;
+	ADDR_1012CF:; // MOV dword ptr [0x00104820],EDX
+	RAM(1067040)._4 = EDX;
+	ADDR_1012D5:; // CDQE
+	RAXs = EAXs;
+	ADDR_1012D7:; // LEA RDX,[0x104840]
+	RDX = ((u64)0x104840);
+	ADDR_1012DE:; // MOV byte ptr [RAX + RDX*0x1],0x30
+	temp_13056._8 = RDX * ((u64)1);
+	temp_13312._8 = RAX + temp_13056._8;
 	temp_47872._1 = ((u8)48);
 	RAM(temp_13312._8)._1 = temp_47872._1;
-	ADDR_400405:; // MOV EAX,dword ptr [0x00601820]
-	EAX = RAM(6297632)._4;
+	ADDR_1012E2:; // MOV EAX,dword ptr [0x00104820]
+	EAX = RAM(1067040)._4;
 	RAX = EAX;
-	ADDR_40040B:; // LEA EDX,[RAX + 0x1]
+	ADDR_1012E8:; // LEA EDX,[RAX + 0x1]
 	temp_12544._8 = RAX + ((u64)1);
 	EDX = (temp_12544._8 / 0x1);
 	RDX = EDX;
-	ADDR_40040E:; // MOV dword ptr [0x00601820],EDX
-	RAM(6297632)._4 = EDX;
-	ADDR_400414:; // MOVSXD RDX,EAX
-	RDXs = EAXs;
-	ADDR_400417:; // LEA RAX,[0x601840]
-	RAX = ((u64)0x601840);
-	ADDR_40041E:; // MOV byte ptr [RDX + RAX*0x1],0x0
-	temp_13056._8 = RAX * ((u64)1);
-	temp_13312._8 = RDX + temp_13056._8;
+	ADDR_1012EB:; // MOV dword ptr [0x00104820],EDX
+	RAM(1067040)._4 = EDX;
+	ADDR_1012F1:; // CDQE
+	RAXs = EAXs;
+	ADDR_1012F3:; // LEA RDX,[0x104840]
+	RDX = ((u64)0x104840);
+	ADDR_1012FA:; // MOV byte ptr [RAX + RDX*0x1],0x0
+	temp_13056._8 = RDX * ((u64)1);
+	temp_13312._8 = RAX + temp_13056._8;
 	temp_47872._1 = ((u8)0);
 	RAM(temp_13312._8)._1 = temp_47872._1;
-	ADDR_400422:; // MOV EAX,dword ptr [RBP + -0xc]
+	ADDR_1012FE:; // MOV EAX,dword ptr [RBP + -0xc]
 	temp_12544._8 = RBP + ((u64)-12);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EAX = temp_48256._4;
 	RAX = EAX;
-	ADDR_400425:; // MOVSXD RDX,EAX
-	RDXs = EAXs;
-	ADDR_400428:; // LEA RAX,[0x601840]
-	RAX = ((u64)0x601840);
-	ADDR_40042F:; // ADD RAX,RDX
+	ADDR_101301:; // CDQE
+	RAXs = EAXs;
+	ADDR_101303:; // LEA RDX,[0x104840]
+	RDX = ((u64)0x104840);
+	ADDR_10130A:; // ADD RAX,RDX
 	CF = (u64)(RAX + RDX) < RAX;
 	OF = SIGN(8, RAXs) == SIGN(8, RDXs) && SIGN(8, (i64)(RAXs + RDXs)) != SIGN(8, RDXs);
 	RAX = RAX + RDX;
@@ -90,14 +92,14 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(8, temp_76800._8);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_400432:; // JMP 0x00400608
-	goto ADDR_400608;
-	ADDR_400437:; // MOV EAX,dword ptr [RBP + -0x24]
+	ADDR_10130D:; // JMP 0x001014e2
+	goto ADDR_1014E2;
+	ADDR_101312:; // MOV EAX,dword ptr [RBP + -0x24]
 	temp_12544._8 = RBP + ((u64)-36);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EAX = temp_48256._4;
 	RAX = EAX;
-	ADDR_40043A:; // SHR EAX,0x1f
+	ADDR_101315:; // SHR EAX,0x1f
 	temp_357120._4 = ((u32)31) & ((u32)31);
 	temp_357248._4 = EAX;
 	EAX = EAX >> temp_357120._4;
@@ -136,14 +138,14 @@ void int_to_string() {
 	temp_79872._1 = temp_79744._1 & PF;
 	temp_80000._1 = temp_77440._1 & temp_79616._1;
 	PF = temp_79872._1 | temp_80000._1;
-	ADDR_40043D:; // MOVZX EAX,AL
+	ADDR_101318:; // MOVZX EAX,AL
 	EAX = AL;
 	RAX = EAX;
-	ADDR_400440:; // MOV dword ptr [RBP + -0x10],EAX
+	ADDR_10131B:; // MOV dword ptr [RBP + -0x10],EAX
 	temp_12544._8 = RBP + ((u64)-16);
 	temp_48256._4 = EAX;
 	RAM(temp_12544._8)._4 = temp_48256._4;
-	ADDR_400443:; // CMP dword ptr [RBP + -0x10],0x0
+	ADDR_10131E:; // CMP dword ptr [RBP + -0x10],0x0
 	temp_12544._8 = RBP + ((u64)-16);
 	temp_48384._4 = RAM(temp_12544._8)._4;
 	CF = temp_48384._4 < ((u32)0);
@@ -157,14 +159,14 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_400447:; // JZ 0x00400450
-	if (ZF) goto ADDR_400450;
-	ADDR_400449:; // MOV EAX,dword ptr [RBP + -0x24]
+	ADDR_101322:; // JZ 0x0010132b
+	if (ZF) goto ADDR_10132B;
+	ADDR_101324:; // MOV EAX,dword ptr [RBP + -0x24]
 	temp_12544._8 = RBP + ((u64)-36);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EAX = temp_48256._4;
 	RAX = EAX;
-	ADDR_40044C:; // NEG EAX
+	ADDR_101327:; // NEG EAX
 	CF = EAX != ((u32)0);
 	OF = SIGN(4, ((i32)0)) != SIGN(4, EAXs) && SIGN(4, (i32)(((i32)0) - EAXs)) == SIGN(4, EAXs);
 	EAXs = -EAXs;
@@ -175,45 +177,82 @@ void int_to_string() {
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
 	RAX = EAX;
-	ADDR_40044E:; // JMP 0x00400453
-	goto ADDR_400453;
-	ADDR_400450:; // MOV EAX,dword ptr [RBP + -0x24]
+	ADDR_101329:; // JMP 0x0010132e
+	goto ADDR_10132E;
+	ADDR_10132B:; // MOV EAX,dword ptr [RBP + -0x24]
 	temp_12544._8 = RBP + ((u64)-36);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EAX = temp_48256._4;
 	RAX = EAX;
-	ADDR_400453:; // MOV dword ptr [RBP + -0x4],EAX
+	ADDR_10132E:; // MOV dword ptr [RBP + -0x4],EAX
 	temp_12544._8 = RBP + ((u64)-4);
 	temp_48256._4 = EAX;
 	RAM(temp_12544._8)._4 = temp_48256._4;
-	ADDR_400456:; // MOV dword ptr [RBP + -0x14],0x0
+	ADDR_101331:; // MOV dword ptr [RBP + -0x14],0x0
 	temp_12544._8 = RBP + ((u64)-20);
 	temp_48384._4 = ((u32)0);
 	RAM(temp_12544._8)._4 = temp_48384._4;
-	ADDR_40045D:; // JMP 0x004004be
-	goto ADDR_4004BE;
-	ADDR_40045F:; // MOV ECX,dword ptr [RBP + -0x4]
+	ADDR_101338:; // JMP 0x001013a2
+	goto ADDR_1013A2;
+	ADDR_10133A:; // MOV ECX,dword ptr [RBP + -0x4]
 	temp_12544._8 = RBP + ((u64)-4);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	ECX = temp_48256._4;
 	RCX = ECX;
-	ADDR_400462:; // MOV EDX,0x66666667
-	RDX = ((u64)0x66666667);
-	ADDR_400467:; // MOV EAX,ECX
-	EAX = ECX;
-	RAX = EAX;
-	ADDR_400469:; // IMUL EDX
-	temp_217472._8s = EAXs;
-	temp_217600._8s = EDXs;
-	temp_217856._8 = temp_217472._8 * temp_217600._8;
-	EDX = (temp_217856._8 / 0x100000000);
-	RDX = EDX;
-	EAX = (temp_217856._8 / 0x1);
-	RAX = EAX;
-	temp_80768._8s = EAXs;
-	CF = temp_80768._8 != temp_217856._8;
+	ADDR_10133D:; // MOVSXD RAX,ECX
+	RAXs = ECXs;
+	ADDR_101340:; // IMUL RAX,RAX,0x66666667
+	temp_226176._16s = RAXs;
+	temp_226304._16s = ((i32)0x66666667);
+	temp_226560._16 = temp_226176._16 * temp_226304._16;
+	temp_226688._8s = ((i32)0x66666667);
+	RAX = RAX * temp_226688._8;
+	temp_227072._8 = (temp_226560._16 / 0x10000000000000000);
+	temp_80768._16s = RAXs;
+	CF = temp_80768._16 != temp_226560._16;
 	OF = CF;
-	ADDR_40046B:; // SAR EDX,0x2
+	ADDR_101347:; // SHR RAX,0x20
+	temp_358528._4 = ((u32)32) & ((u32)63);
+	temp_358656._8 = RAX;
+	RAX = RAX >> temp_358528._4;
+	temp_90368._1 = temp_358528._4 != ((u32)0);
+	temp_90496._4 = temp_358528._4 - ((u32)1);
+	temp_90624._8 = temp_358656._8 >> temp_90496._4;
+	temp_90752._8 = temp_90624._8 & ((u64)1);
+	temp_91008._1 = temp_90752._8 != ((u64)0);
+	temp_91136._1 = !temp_90368._1;
+	temp_91264._1 = temp_91136._1 & CF;
+	temp_91392._1 = temp_90368._1 & temp_91008._1;
+	CF = temp_91264._1 | temp_91392._1;
+	temp_91776._1 = temp_358528._4 == ((u32)1);
+	temp_92032._1 = temp_358656._8s < ((i64)0);
+	temp_92160._1 = !temp_91776._1;
+	temp_92288._1 = temp_92160._1 & OF;
+	temp_92416._1 = temp_91776._1 & temp_92032._1;
+	OF = temp_92288._1 | temp_92416._1;
+	temp_77440._1 = temp_358528._4 != ((u32)0);
+	temp_77696._1 = RAXs < ((i64)0);
+	temp_77824._1 = !temp_77440._1;
+	temp_77952._1 = temp_77824._1 & SF;
+	temp_78080._1 = temp_77440._1 & temp_77696._1;
+	SF = temp_77952._1 | temp_78080._1;
+	temp_78464._1 = RAX == ((u64)0);
+	temp_78592._1 = !temp_77440._1;
+	temp_78720._1 = temp_78592._1 & ZF;
+	temp_78848._1 = temp_77440._1 & temp_78464._1;
+	ZF = temp_78720._1 | temp_78848._1;
+	temp_79104._8 = RAX & ((u64)255);
+	temp_79232._1 = POPCOUNT(8, temp_79104._8);
+	temp_79360._1 = temp_79232._1 & ((u8)1);
+	temp_79616._1 = temp_79360._1 == ((u8)0);
+	temp_79744._1 = !temp_77440._1;
+	temp_79872._1 = temp_79744._1 & PF;
+	temp_80000._1 = temp_77440._1 & temp_79616._1;
+	PF = temp_79872._1 | temp_80000._1;
+	ADDR_10134B:; // MOV EDX,EAX
+	EDX = EAX;
+	RDX = EDX;
+	ADDR_10134D:; // SAR EDX,0x2
 	temp_333312._4 = ((u32)2) & ((u32)31);
 	temp_333440._4 = EDX;
 	EDXs = EDXs >> temp_333312._4;
@@ -249,10 +288,10 @@ void int_to_string() {
 	temp_79872._1 = temp_79744._1 & PF;
 	temp_80000._1 = temp_77440._1 & temp_79616._1;
 	PF = temp_79872._1 | temp_80000._1;
-	ADDR_40046E:; // MOV EAX,ECX
+	ADDR_101350:; // MOV EAX,ECX
 	EAX = ECX;
 	RAX = EAX;
-	ADDR_400470:; // SAR EAX,0x1f
+	ADDR_101352:; // SAR EAX,0x1f
 	temp_333312._4 = ((u32)31) & ((u32)31);
 	temp_333440._4 = EAX;
 	EAXs = EAXs >> temp_333312._4;
@@ -288,7 +327,7 @@ void int_to_string() {
 	temp_79872._1 = temp_79744._1 & PF;
 	temp_80000._1 = temp_77440._1 & temp_79616._1;
 	PF = temp_79872._1 | temp_80000._1;
-	ADDR_400473:; // SUB EDX,EAX
+	ADDR_101355:; // SUB EDX,EAX
 	CF = EDX < EAX;
 	OF = SIGN(4, EDXs) != SIGN(4, EAXs) && SIGN(4, (i32)(EDXs - EAXs)) == SIGN(4, EAXs);
 	EDX = EDX - EAX;
@@ -299,10 +338,10 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_400475:; // MOV EAX,EDX
+	ADDR_101357:; // MOV EAX,EDX
 	EAX = EDX;
 	RAX = EAX;
-	ADDR_400477:; // SHL EAX,0x2
+	ADDR_101359:; // SHL EAX,0x2
 	temp_340736._4 = ((u32)2) & ((u32)31);
 	temp_340864._4 = EAX;
 	EAX = EAX << temp_340736._4;
@@ -341,7 +380,7 @@ void int_to_string() {
 	temp_79872._1 = temp_79744._1 & PF;
 	temp_80000._1 = temp_77440._1 & temp_79616._1;
 	PF = temp_79872._1 | temp_80000._1;
-	ADDR_40047A:; // ADD EAX,EDX
+	ADDR_10135C:; // ADD EAX,EDX
 	CF = (u32)(EAX + EDX) < EAX;
 	OF = SIGN(4, EAXs) == SIGN(4, EDXs) && SIGN(4, (i32)(EAXs + EDXs)) != SIGN(4, EDXs);
 	EAX = EAX + EDX;
@@ -352,7 +391,7 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_40047C:; // ADD EAX,EAX
+	ADDR_10135E:; // ADD EAX,EAX
 	CF = (u32)(EAX + EAX) < EAX;
 	OF = SIGN(4, EAXs) == SIGN(4, EAXs) && SIGN(4, (i32)(EAXs + EAXs)) != SIGN(4, EAXs);
 	EAX = EAX + EAX;
@@ -363,7 +402,7 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_40047E:; // SUB ECX,EAX
+	ADDR_101360:; // SUB ECX,EAX
 	CF = ECX < EAX;
 	OF = SIGN(4, ECXs) != SIGN(4, EAXs) && SIGN(4, (i32)(ECXs - EAXs)) == SIGN(4, EAXs);
 	ECX = ECX - EAX;
@@ -374,56 +413,90 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_400480:; // MOV EDX,ECX
+	ADDR_101362:; // MOV EDX,ECX
 	EDX = ECX;
 	RDX = EDX;
-	ADDR_400482:; // MOV EAX,EDX
+	ADDR_101364:; // MOV EAX,EDX
 	EAX = EDX;
 	RAX = EAX;
-	ADDR_400484:; // LEA ECX,[RAX + 0x30]
+	ADDR_101366:; // LEA ECX,[RAX + 0x30]
 	temp_12544._8 = RAX + ((u64)48);
 	ECX = (temp_12544._8 / 0x1);
 	RCX = ECX;
-	ADDR_400487:; // MOV EAX,dword ptr [0x00601820]
-	EAX = RAM(6297632)._4;
+	ADDR_101369:; // MOV EAX,dword ptr [0x00104820]
+	EAX = RAM(1067040)._4;
 	RAX = EAX;
-	ADDR_40048D:; // LEA EDX,[RAX + 0x1]
+	ADDR_10136F:; // LEA EDX,[RAX + 0x1]
 	temp_12544._8 = RAX + ((u64)1);
 	EDX = (temp_12544._8 / 0x1);
 	RDX = EDX;
-	ADDR_400490:; // MOV dword ptr [0x00601820],EDX
-	RAM(6297632)._4 = EDX;
-	ADDR_400496:; // MOVSXD RDX,EAX
-	RDXs = EAXs;
-	ADDR_400499:; // LEA RAX,[0x601840]
-	RAX = ((u64)0x601840);
-	ADDR_4004A0:; // MOV byte ptr [RDX + RAX*0x1],CL
-	temp_13056._8 = RAX * ((u64)1);
-	temp_13312._8 = RDX + temp_13056._8;
+	ADDR_101372:; // MOV dword ptr [0x00104820],EDX
+	RAM(1067040)._4 = EDX;
+	ADDR_101378:; // CDQE
+	RAXs = EAXs;
+	ADDR_10137A:; // LEA RDX,[0x104840]
+	RDX = ((u64)0x104840);
+	ADDR_101381:; // MOV byte ptr [RAX + RDX*0x1],CL
+	temp_13056._8 = RDX * ((u64)1);
+	temp_13312._8 = RAX + temp_13056._8;
 	temp_47744._1 = CL;
 	RAM(temp_13312._8)._1 = temp_47744._1;
-	ADDR_4004A3:; // MOV ECX,dword ptr [RBP + -0x4]
+	ADDR_101384:; // MOV EAX,dword ptr [RBP + -0x4]
 	temp_12544._8 = RBP + ((u64)-4);
 	temp_48256._4 = RAM(temp_12544._8)._4;
-	ECX = temp_48256._4;
-	RCX = ECX;
-	ADDR_4004A6:; // MOV EDX,0x66666667
-	RDX = ((u64)0x66666667);
-	ADDR_4004AB:; // MOV EAX,ECX
-	EAX = ECX;
+	EAX = temp_48256._4;
 	RAX = EAX;
-	ADDR_4004AD:; // IMUL EDX
-	temp_217472._8s = EAXs;
-	temp_217600._8s = EDXs;
-	temp_217856._8 = temp_217472._8 * temp_217600._8;
-	EDX = (temp_217856._8 / 0x100000000);
-	RDX = EDX;
-	EAX = (temp_217856._8 / 0x1);
-	RAX = EAX;
-	temp_80768._8s = EAXs;
-	CF = temp_80768._8 != temp_217856._8;
+	ADDR_101387:; // MOVSXD RDX,EAX
+	RDXs = EAXs;
+	ADDR_10138A:; // IMUL RDX,RDX,0x66666667
+	temp_226176._16s = RDXs;
+	temp_226304._16s = ((i32)0x66666667);
+	temp_226560._16 = temp_226176._16 * temp_226304._16;
+	temp_226688._8s = ((i32)0x66666667);
+	RDX = RDX * temp_226688._8;
+	temp_227072._8 = (temp_226560._16 / 0x10000000000000000);
+	temp_80768._16s = RDXs;
+	CF = temp_80768._16 != temp_226560._16;
 	OF = CF;
-	ADDR_4004AF:; // SAR EDX,0x2
+	ADDR_101391:; // SHR RDX,0x20
+	temp_358528._4 = ((u32)32) & ((u32)63);
+	temp_358656._8 = RDX;
+	RDX = RDX >> temp_358528._4;
+	temp_90368._1 = temp_358528._4 != ((u32)0);
+	temp_90496._4 = temp_358528._4 - ((u32)1);
+	temp_90624._8 = temp_358656._8 >> temp_90496._4;
+	temp_90752._8 = temp_90624._8 & ((u64)1);
+	temp_91008._1 = temp_90752._8 != ((u64)0);
+	temp_91136._1 = !temp_90368._1;
+	temp_91264._1 = temp_91136._1 & CF;
+	temp_91392._1 = temp_90368._1 & temp_91008._1;
+	CF = temp_91264._1 | temp_91392._1;
+	temp_91776._1 = temp_358528._4 == ((u32)1);
+	temp_92032._1 = temp_358656._8s < ((i64)0);
+	temp_92160._1 = !temp_91776._1;
+	temp_92288._1 = temp_92160._1 & OF;
+	temp_92416._1 = temp_91776._1 & temp_92032._1;
+	OF = temp_92288._1 | temp_92416._1;
+	temp_77440._1 = temp_358528._4 != ((u32)0);
+	temp_77696._1 = RDXs < ((i64)0);
+	temp_77824._1 = !temp_77440._1;
+	temp_77952._1 = temp_77824._1 & SF;
+	temp_78080._1 = temp_77440._1 & temp_77696._1;
+	SF = temp_77952._1 | temp_78080._1;
+	temp_78464._1 = RDX == ((u64)0);
+	temp_78592._1 = !temp_77440._1;
+	temp_78720._1 = temp_78592._1 & ZF;
+	temp_78848._1 = temp_77440._1 & temp_78464._1;
+	ZF = temp_78720._1 | temp_78848._1;
+	temp_79104._8 = RDX & ((u64)255);
+	temp_79232._1 = POPCOUNT(8, temp_79104._8);
+	temp_79360._1 = temp_79232._1 & ((u8)1);
+	temp_79616._1 = temp_79360._1 == ((u8)0);
+	temp_79744._1 = !temp_77440._1;
+	temp_79872._1 = temp_79744._1 & PF;
+	temp_80000._1 = temp_77440._1 & temp_79616._1;
+	PF = temp_79872._1 | temp_80000._1;
+	ADDR_101395:; // SAR EDX,0x2
 	temp_333312._4 = ((u32)2) & ((u32)31);
 	temp_333440._4 = EDX;
 	EDXs = EDXs >> temp_333312._4;
@@ -459,10 +532,7 @@ void int_to_string() {
 	temp_79872._1 = temp_79744._1 & PF;
 	temp_80000._1 = temp_77440._1 & temp_79616._1;
 	PF = temp_79872._1 | temp_80000._1;
-	ADDR_4004B2:; // MOV EAX,ECX
-	EAX = ECX;
-	RAX = EAX;
-	ADDR_4004B4:; // SAR EAX,0x1f
+	ADDR_101398:; // SAR EAX,0x1f
 	temp_333312._4 = ((u32)31) & ((u32)31);
 	temp_333440._4 = EAX;
 	EAXs = EAXs >> temp_333312._4;
@@ -498,7 +568,7 @@ void int_to_string() {
 	temp_79872._1 = temp_79744._1 & PF;
 	temp_80000._1 = temp_77440._1 & temp_79616._1;
 	PF = temp_79872._1 | temp_80000._1;
-	ADDR_4004B7:; // SUB EDX,EAX
+	ADDR_10139B:; // SUB EDX,EAX
 	CF = EDX < EAX;
 	OF = SIGN(4, EDXs) != SIGN(4, EAXs) && SIGN(4, (i32)(EDXs - EAXs)) == SIGN(4, EAXs);
 	EDX = EDX - EAX;
@@ -509,14 +579,14 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_4004B9:; // MOV EAX,EDX
+	ADDR_10139D:; // MOV EAX,EDX
 	EAX = EDX;
 	RAX = EAX;
-	ADDR_4004BB:; // MOV dword ptr [RBP + -0x4],EAX
+	ADDR_10139F:; // MOV dword ptr [RBP + -0x4],EAX
 	temp_12544._8 = RBP + ((u64)-4);
 	temp_48256._4 = EAX;
 	RAM(temp_12544._8)._4 = temp_48256._4;
-	ADDR_4004BE:; // CMP dword ptr [RBP + -0x4],0x0
+	ADDR_1013A2:; // CMP dword ptr [RBP + -0x4],0x0
 	temp_12544._8 = RBP + ((u64)-4);
 	temp_48384._4 = RAM(temp_12544._8)._4;
 	CF = temp_48384._4 < ((u32)0);
@@ -530,12 +600,12 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_4004C2:; // JG 0x0040045f
+	ADDR_1013A6:; // JG 0x0010133a
 	temp_52992._1 = !ZF;
 	temp_53120._1 = OF == SF;
 	temp_53376._1 = temp_52992._1 && temp_53120._1;
-	if (temp_53376._1) goto ADDR_40045F;
-	ADDR_4004C4:; // CMP dword ptr [RBP + -0x10],0x0
+	if (temp_53376._1) goto ADDR_10133A;
+	ADDR_1013A8:; // CMP dword ptr [RBP + -0x10],0x0
 	temp_12544._8 = RBP + ((u64)-16);
 	temp_48384._4 = RAM(temp_12544._8)._4;
 	CF = temp_48384._4 < ((u32)0);
@@ -549,43 +619,43 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_4004C8:; // JZ 0x004004e7
-	if (ZF) goto ADDR_4004E7;
-	ADDR_4004CA:; // MOV EAX,dword ptr [0x00601820]
-	EAX = RAM(6297632)._4;
+	ADDR_1013AC:; // JZ 0x001013ca
+	if (ZF) goto ADDR_1013CA;
+	ADDR_1013AE:; // MOV EAX,dword ptr [0x00104820]
+	EAX = RAM(1067040)._4;
 	RAX = EAX;
-	ADDR_4004D0:; // LEA EDX,[RAX + 0x1]
+	ADDR_1013B4:; // LEA EDX,[RAX + 0x1]
 	temp_12544._8 = RAX + ((u64)1);
 	EDX = (temp_12544._8 / 0x1);
 	RDX = EDX;
-	ADDR_4004D3:; // MOV dword ptr [0x00601820],EDX
-	RAM(6297632)._4 = EDX;
-	ADDR_4004D9:; // MOVSXD RDX,EAX
-	RDXs = EAXs;
-	ADDR_4004DC:; // LEA RAX,[0x601840]
-	RAX = ((u64)0x601840);
-	ADDR_4004E3:; // MOV byte ptr [RDX + RAX*0x1],0x2d
-	temp_13056._8 = RAX * ((u64)1);
-	temp_13312._8 = RDX + temp_13056._8;
+	ADDR_1013B7:; // MOV dword ptr [0x00104820],EDX
+	RAM(1067040)._4 = EDX;
+	ADDR_1013BD:; // CDQE
+	RAXs = EAXs;
+	ADDR_1013BF:; // LEA RDX,[0x104840]
+	RDX = ((u64)0x104840);
+	ADDR_1013C6:; // MOV byte ptr [RAX + RDX*0x1],0x2d
+	temp_13056._8 = RDX * ((u64)1);
+	temp_13312._8 = RAX + temp_13056._8;
 	temp_47872._1 = ((u8)45);
 	RAM(temp_13312._8)._1 = temp_47872._1;
-	ADDR_4004E7:; // MOV dword ptr [RBP + -0x8],0x0
+	ADDR_1013CA:; // MOV dword ptr [RBP + -0x8],0x0
 	temp_12544._8 = RBP + ((u64)-8);
 	temp_48384._4 = ((u32)0);
 	RAM(temp_12544._8)._4 = temp_48384._4;
-	ADDR_4004EE:; // JMP 0x004005c0
-	goto ADDR_4005C0;
-	ADDR_4004F3:; // MOV EDX,dword ptr [RBP + -0xc]
+	ADDR_1013D1:; // JMP 0x0010149c
+	goto ADDR_10149C;
+	ADDR_1013D6:; // MOV EDX,dword ptr [RBP + -0xc]
 	temp_12544._8 = RBP + ((u64)-12);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EDX = temp_48256._4;
 	RDX = EDX;
-	ADDR_4004F6:; // MOV EAX,dword ptr [RBP + -0x8]
+	ADDR_1013D9:; // MOV EAX,dword ptr [RBP + -0x8]
 	temp_12544._8 = RBP + ((u64)-8);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EAX = temp_48256._4;
 	RAX = EAX;
-	ADDR_4004F9:; // ADD EAX,EDX
+	ADDR_1013DC:; // ADD EAX,EDX
 	CF = (u32)(EAX + EDX) < EAX;
 	OF = SIGN(4, EAXs) == SIGN(4, EDXs) && SIGN(4, (i32)(EAXs + EDXs)) != SIGN(4, EDXs);
 	EAX = EAX + EDX;
@@ -596,20 +666,20 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_4004FB:; // MOVSXD RDX,EAX
-	RDXs = EAXs;
-	ADDR_4004FE:; // LEA RAX,[0x601840]
-	RAX = ((u64)0x601840);
-	ADDR_400505:; // MOVZX ESI,byte ptr [RDX + RAX*0x1]
-	temp_13056._8 = RAX * ((u64)1);
-	temp_13312._8 = RDX + temp_13056._8;
+	ADDR_1013DE:; // CDQE
+	RAXs = EAXs;
+	ADDR_1013E0:; // LEA RDX,[0x104840]
+	RDX = ((u64)0x104840);
+	ADDR_1013E7:; // MOVZX ESI,byte ptr [RAX + RDX*0x1]
+	temp_13056._8 = RDX * ((u64)1);
+	temp_13312._8 = RAX + temp_13056._8;
 	temp_47872._1 = RAM(temp_13312._8)._1;
 	ESI = temp_47872._1;
 	RSI = ESI;
-	ADDR_400509:; // MOV EAX,dword ptr [0x00601820]
-	EAX = RAM(6297632)._4;
+	ADDR_1013EB:; // MOV EAX,dword ptr [0x00104820]
+	EAX = RAM(1067040)._4;
 	RAX = EAX;
-	ADDR_40050F:; // SUB EAX,0x1
+	ADDR_1013F1:; // SUB EAX,0x1
 	CF = EAX < ((u32)1);
 	OF = SIGN(4, EAXs) != SIGN(4, ((i32)1)) && SIGN(4, (i32)(EAXs - ((i32)1))) == SIGN(4, ((i32)1));
 	EAX = EAX - ((u32)1);
@@ -620,7 +690,7 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_400512:; // SUB EAX,dword ptr [RBP + -0x8]
+	ADDR_1013F4:; // SUB EAX,dword ptr [RBP + -0x8]
 	temp_12544._8 = RBP + ((u64)-8);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	CF = EAX < temp_48256._4;
@@ -635,27 +705,27 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_400515:; // MOVSXD RDX,EAX
-	RDXs = EAXs;
-	ADDR_400518:; // LEA RAX,[0x601840]
-	RAX = ((u64)0x601840);
-	ADDR_40051F:; // MOVZX ECX,byte ptr [RDX + RAX*0x1]
-	temp_13056._8 = RAX * ((u64)1);
-	temp_13312._8 = RDX + temp_13056._8;
+	ADDR_1013F7:; // CDQE
+	RAXs = EAXs;
+	ADDR_1013F9:; // LEA RDX,[0x104840]
+	RDX = ((u64)0x104840);
+	ADDR_101400:; // MOVZX ECX,byte ptr [RAX + RDX*0x1]
+	temp_13056._8 = RDX * ((u64)1);
+	temp_13312._8 = RAX + temp_13056._8;
 	temp_47872._1 = RAM(temp_13312._8)._1;
 	ECX = temp_47872._1;
 	RCX = ECX;
-	ADDR_400523:; // MOV EDX,dword ptr [RBP + -0xc]
+	ADDR_101404:; // MOV EDX,dword ptr [RBP + -0xc]
 	temp_12544._8 = RBP + ((u64)-12);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EDX = temp_48256._4;
 	RDX = EDX;
-	ADDR_400526:; // MOV EAX,dword ptr [RBP + -0x8]
+	ADDR_101407:; // MOV EAX,dword ptr [RBP + -0x8]
 	temp_12544._8 = RBP + ((u64)-8);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EAX = temp_48256._4;
 	RAX = EAX;
-	ADDR_400529:; // ADD EAX,EDX
+	ADDR_10140A:; // ADD EAX,EDX
 	CF = (u32)(EAX + EDX) < EAX;
 	OF = SIGN(4, EAXs) == SIGN(4, EDXs) && SIGN(4, (i32)(EAXs + EDXs)) != SIGN(4, EDXs);
 	EAX = EAX + EDX;
@@ -666,7 +736,7 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_40052B:; // XOR ESI,ECX
+	ADDR_10140C:; // XOR ESI,ECX
 	CF = ((u8)0);
 	OF = ((u8)0);
 	ESI = ESI ^ ECX;
@@ -677,29 +747,29 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_40052D:; // MOVSXD RCX,EAX
-	RCXs = EAXs;
-	ADDR_400530:; // LEA RDX,[0x601840]
-	RDX = ((u64)0x601840);
-	ADDR_400537:; // MOV byte ptr [RCX + RDX*0x1],SIL
-	temp_13056._8 = RDX * ((u64)1);
-	temp_13312._8 = RCX + temp_13056._8;
+	ADDR_10140E:; // MOVSXD RDX,EAX
+	RDXs = EAXs;
+	ADDR_101411:; // LEA RCX,[0x104840]
+	RCX = ((u64)0x104840);
+	ADDR_101418:; // MOV byte ptr [RDX + RCX*0x1],SIL
+	temp_13056._8 = RCX * ((u64)1);
+	temp_13312._8 = RDX + temp_13056._8;
 	temp_47744._1 = SIL;
 	RAM(temp_13312._8)._1 = temp_47744._1;
-	ADDR_40053B:; // MOVSXD RDX,EAX
-	RDXs = EAXs;
-	ADDR_40053E:; // LEA RAX,[0x601840]
-	RAX = ((u64)0x601840);
-	ADDR_400545:; // MOVZX ECX,byte ptr [RDX + RAX*0x1]
-	temp_13056._8 = RAX * ((u64)1);
-	temp_13312._8 = RDX + temp_13056._8;
+	ADDR_10141C:; // CDQE
+	RAXs = EAXs;
+	ADDR_10141E:; // LEA RDX,[0x104840]
+	RDX = ((u64)0x104840);
+	ADDR_101425:; // MOVZX ECX,byte ptr [RAX + RDX*0x1]
+	temp_13056._8 = RDX * ((u64)1);
+	temp_13312._8 = RAX + temp_13056._8;
 	temp_47872._1 = RAM(temp_13312._8)._1;
 	ECX = temp_47872._1;
 	RCX = ECX;
-	ADDR_400549:; // MOV EAX,dword ptr [0x00601820]
-	EAX = RAM(6297632)._4;
+	ADDR_101429:; // MOV EAX,dword ptr [0x00104820]
+	EAX = RAM(1067040)._4;
 	RAX = EAX;
-	ADDR_40054F:; // SUB EAX,0x1
+	ADDR_10142F:; // SUB EAX,0x1
 	CF = EAX < ((u32)1);
 	OF = SIGN(4, EAXs) != SIGN(4, ((i32)1)) && SIGN(4, (i32)(EAXs - ((i32)1))) == SIGN(4, ((i32)1));
 	EAX = EAX - ((u32)1);
@@ -710,7 +780,7 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_400552:; // SUB EAX,dword ptr [RBP + -0x8]
+	ADDR_101432:; // SUB EAX,dword ptr [RBP + -0x8]
 	temp_12544._8 = RBP + ((u64)-8);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	CF = EAX < temp_48256._4;
@@ -725,20 +795,20 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_400555:; // MOVSXD RDX,EAX
-	RDXs = EAXs;
-	ADDR_400558:; // LEA RAX,[0x601840]
-	RAX = ((u64)0x601840);
-	ADDR_40055F:; // MOVZX EDX,byte ptr [RDX + RAX*0x1]
-	temp_13056._8 = RAX * ((u64)1);
-	temp_13312._8 = RDX + temp_13056._8;
+	ADDR_101435:; // CDQE
+	RAXs = EAXs;
+	ADDR_101437:; // LEA RDX,[0x104840]
+	RDX = ((u64)0x104840);
+	ADDR_10143E:; // MOVZX EDX,byte ptr [RAX + RDX*0x1]
+	temp_13056._8 = RDX * ((u64)1);
+	temp_13312._8 = RAX + temp_13056._8;
 	temp_47872._1 = RAM(temp_13312._8)._1;
 	EDX = temp_47872._1;
 	RDX = EDX;
-	ADDR_400563:; // MOV EAX,dword ptr [0x00601820]
-	EAX = RAM(6297632)._4;
+	ADDR_101442:; // MOV EAX,dword ptr [0x00104820]
+	EAX = RAM(1067040)._4;
 	RAX = EAX;
-	ADDR_400569:; // SUB EAX,0x1
+	ADDR_101448:; // SUB EAX,0x1
 	CF = EAX < ((u32)1);
 	OF = SIGN(4, EAXs) != SIGN(4, ((i32)1)) && SIGN(4, (i32)(EAXs - ((i32)1))) == SIGN(4, ((i32)1));
 	EAX = EAX - ((u32)1);
@@ -749,7 +819,7 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_40056C:; // SUB EAX,dword ptr [RBP + -0x8]
+	ADDR_10144B:; // SUB EAX,dword ptr [RBP + -0x8]
 	temp_12544._8 = RBP + ((u64)-8);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	CF = EAX < temp_48256._4;
@@ -764,10 +834,10 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_40056F:; // MOV ESI,ECX
+	ADDR_10144E:; // MOV ESI,ECX
 	ESI = ECX;
 	RSI = ESI;
-	ADDR_400571:; // XOR ESI,EDX
+	ADDR_101450:; // XOR ESI,EDX
 	CF = ((u8)0);
 	OF = ((u8)0);
 	ESI = ESI ^ EDX;
@@ -778,36 +848,36 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_400573:; // MOVSXD RCX,EAX
-	RCXs = EAXs;
-	ADDR_400576:; // LEA RDX,[0x601840]
-	RDX = ((u64)0x601840);
-	ADDR_40057D:; // MOV byte ptr [RCX + RDX*0x1],SIL
-	temp_13056._8 = RDX * ((u64)1);
-	temp_13312._8 = RCX + temp_13056._8;
+	ADDR_101452:; // MOVSXD RDX,EAX
+	RDXs = EAXs;
+	ADDR_101455:; // LEA RCX,[0x104840]
+	RCX = ((u64)0x104840);
+	ADDR_10145C:; // MOV byte ptr [RDX + RCX*0x1],SIL
+	temp_13056._8 = RCX * ((u64)1);
+	temp_13312._8 = RDX + temp_13056._8;
 	temp_47744._1 = SIL;
 	RAM(temp_13312._8)._1 = temp_47744._1;
-	ADDR_400581:; // MOVSXD RDX,EAX
-	RDXs = EAXs;
-	ADDR_400584:; // LEA RAX,[0x601840]
-	RAX = ((u64)0x601840);
-	ADDR_40058B:; // MOVZX ESI,byte ptr [RDX + RAX*0x1]
-	temp_13056._8 = RAX * ((u64)1);
-	temp_13312._8 = RDX + temp_13056._8;
+	ADDR_101460:; // CDQE
+	RAXs = EAXs;
+	ADDR_101462:; // LEA RDX,[0x104840]
+	RDX = ((u64)0x104840);
+	ADDR_101469:; // MOVZX ESI,byte ptr [RAX + RDX*0x1]
+	temp_13056._8 = RDX * ((u64)1);
+	temp_13312._8 = RAX + temp_13056._8;
 	temp_47872._1 = RAM(temp_13312._8)._1;
 	ESI = temp_47872._1;
 	RSI = ESI;
-	ADDR_40058F:; // MOV EDX,dword ptr [RBP + -0xc]
+	ADDR_10146D:; // MOV EDX,dword ptr [RBP + -0xc]
 	temp_12544._8 = RBP + ((u64)-12);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EDX = temp_48256._4;
 	RDX = EDX;
-	ADDR_400592:; // MOV EAX,dword ptr [RBP + -0x8]
+	ADDR_101470:; // MOV EAX,dword ptr [RBP + -0x8]
 	temp_12544._8 = RBP + ((u64)-8);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EAX = temp_48256._4;
 	RAX = EAX;
-	ADDR_400595:; // ADD EAX,EDX
+	ADDR_101473:; // ADD EAX,EDX
 	CF = (u32)(EAX + EDX) < EAX;
 	OF = SIGN(4, EAXs) == SIGN(4, EDXs) && SIGN(4, (i32)(EAXs + EDXs)) != SIGN(4, EDXs);
 	EAX = EAX + EDX;
@@ -818,27 +888,27 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_400597:; // MOVSXD RDX,EAX
-	RDXs = EAXs;
-	ADDR_40059A:; // LEA RAX,[0x601840]
-	RAX = ((u64)0x601840);
-	ADDR_4005A1:; // MOVZX ECX,byte ptr [RDX + RAX*0x1]
-	temp_13056._8 = RAX * ((u64)1);
-	temp_13312._8 = RDX + temp_13056._8;
+	ADDR_101475:; // CDQE
+	RAXs = EAXs;
+	ADDR_101477:; // LEA RDX,[0x104840]
+	RDX = ((u64)0x104840);
+	ADDR_10147E:; // MOVZX ECX,byte ptr [RAX + RDX*0x1]
+	temp_13056._8 = RDX * ((u64)1);
+	temp_13312._8 = RAX + temp_13056._8;
 	temp_47872._1 = RAM(temp_13312._8)._1;
 	ECX = temp_47872._1;
 	RCX = ECX;
-	ADDR_4005A5:; // MOV EDX,dword ptr [RBP + -0xc]
+	ADDR_101482:; // MOV EDX,dword ptr [RBP + -0xc]
 	temp_12544._8 = RBP + ((u64)-12);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EDX = temp_48256._4;
 	RDX = EDX;
-	ADDR_4005A8:; // MOV EAX,dword ptr [RBP + -0x8]
+	ADDR_101485:; // MOV EAX,dword ptr [RBP + -0x8]
 	temp_12544._8 = RBP + ((u64)-8);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EAX = temp_48256._4;
 	RAX = EAX;
-	ADDR_4005AB:; // ADD EAX,EDX
+	ADDR_101488:; // ADD EAX,EDX
 	CF = (u32)(EAX + EDX) < EAX;
 	OF = SIGN(4, EAXs) == SIGN(4, EDXs) && SIGN(4, (i32)(EAXs + EDXs)) != SIGN(4, EDXs);
 	EAX = EAX + EDX;
@@ -849,7 +919,7 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_4005AD:; // XOR ECX,ESI
+	ADDR_10148A:; // XOR ECX,ESI
 	CF = ((u8)0);
 	OF = ((u8)0);
 	ECX = ECX ^ ESI;
@@ -860,16 +930,16 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_4005AF:; // MOVSXD RDX,EAX
-	RDXs = EAXs;
-	ADDR_4005B2:; // LEA RAX,[0x601840]
-	RAX = ((u64)0x601840);
-	ADDR_4005B9:; // MOV byte ptr [RDX + RAX*0x1],CL
-	temp_13056._8 = RAX * ((u64)1);
-	temp_13312._8 = RDX + temp_13056._8;
+	ADDR_10148C:; // CDQE
+	RAXs = EAXs;
+	ADDR_10148E:; // LEA RDX,[0x104840]
+	RDX = ((u64)0x104840);
+	ADDR_101495:; // MOV byte ptr [RAX + RDX*0x1],CL
+	temp_13056._8 = RDX * ((u64)1);
+	temp_13312._8 = RAX + temp_13056._8;
 	temp_47744._1 = CL;
 	RAM(temp_13312._8)._1 = temp_47744._1;
-	ADDR_4005BC:; // ADD dword ptr [RBP + -0x8],0x1
+	ADDR_101498:; // ADD dword ptr [RBP + -0x8],0x1
 	temp_12544._8 = RBP + ((u64)-8);
 	temp_48384._4 = RAM(temp_12544._8)._4;
 	CF = (u32)(temp_48384._4 + ((u32)1)) < temp_48384._4;
@@ -887,10 +957,10 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_4005C0:; // MOV EAX,dword ptr [0x00601820]
-	EAX = RAM(6297632)._4;
+	ADDR_10149C:; // MOV EAX,dword ptr [0x00104820]
+	EAX = RAM(1067040)._4;
 	RAX = EAX;
-	ADDR_4005C6:; // SUB EAX,dword ptr [RBP + -0xc]
+	ADDR_1014A2:; // SUB EAX,dword ptr [RBP + -0xc]
 	temp_12544._8 = RBP + ((u64)-12);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	CF = EAX < temp_48256._4;
@@ -905,10 +975,10 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_4005C9:; // MOV EDX,EAX
+	ADDR_1014A5:; // MOV EDX,EAX
 	EDX = EAX;
 	RDX = EDX;
-	ADDR_4005CB:; // SHR EDX,0x1f
+	ADDR_1014A7:; // SHR EDX,0x1f
 	temp_357120._4 = ((u32)31) & ((u32)31);
 	temp_357248._4 = EDX;
 	EDX = EDX >> temp_357120._4;
@@ -947,7 +1017,7 @@ void int_to_string() {
 	temp_79872._1 = temp_79744._1 & PF;
 	temp_80000._1 = temp_77440._1 & temp_79616._1;
 	PF = temp_79872._1 | temp_80000._1;
-	ADDR_4005CE:; // ADD EAX,EDX
+	ADDR_1014AA:; // ADD EAX,EDX
 	CF = (u32)(EAX + EDX) < EAX;
 	OF = SIGN(4, EAXs) == SIGN(4, EDXs) && SIGN(4, (i32)(EAXs + EDXs)) != SIGN(4, EDXs);
 	EAX = EAX + EDX;
@@ -958,7 +1028,7 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_4005D0:; // SAR EAX,1
+	ADDR_1014AC:; // SAR EAX,1
 	temp_48768._1 = ((u8)1);
 	temp_332288._4 = EAX & ((u32)1);
 	CF = temp_332288._4 != ((u32)0);
@@ -971,7 +1041,7 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_4005D2:; // CMP dword ptr [RBP + -0x8],EAX
+	ADDR_1014AE:; // CMP dword ptr [RBP + -0x8],EAX
 	temp_12544._8 = RBP + ((u64)-8);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	CF = temp_48256._4 < EAX;
@@ -985,37 +1055,37 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_4005D5:; // JL 0x004004f3
+	ADDR_1014B1:; // JL 0x001013d6
 	temp_52224._1 = OF != SF;
-	if (temp_52224._1) goto ADDR_4004F3;
-	ADDR_4005DB:; // MOV EAX,dword ptr [0x00601820]
-	EAX = RAM(6297632)._4;
+	if (temp_52224._1) goto ADDR_1013D6;
+	ADDR_1014B7:; // MOV EAX,dword ptr [0x00104820]
+	EAX = RAM(1067040)._4;
 	RAX = EAX;
-	ADDR_4005E1:; // LEA EDX,[RAX + 0x1]
+	ADDR_1014BD:; // LEA EDX,[RAX + 0x1]
 	temp_12544._8 = RAX + ((u64)1);
 	EDX = (temp_12544._8 / 0x1);
 	RDX = EDX;
-	ADDR_4005E4:; // MOV dword ptr [0x00601820],EDX
-	RAM(6297632)._4 = EDX;
-	ADDR_4005EA:; // MOVSXD RDX,EAX
-	RDXs = EAXs;
-	ADDR_4005ED:; // LEA RAX,[0x601840]
-	RAX = ((u64)0x601840);
-	ADDR_4005F4:; // MOV byte ptr [RDX + RAX*0x1],0x0
-	temp_13056._8 = RAX * ((u64)1);
-	temp_13312._8 = RDX + temp_13056._8;
+	ADDR_1014C0:; // MOV dword ptr [0x00104820],EDX
+	RAM(1067040)._4 = EDX;
+	ADDR_1014C6:; // CDQE
+	RAXs = EAXs;
+	ADDR_1014C8:; // LEA RDX,[0x104840]
+	RDX = ((u64)0x104840);
+	ADDR_1014CF:; // MOV byte ptr [RAX + RDX*0x1],0x0
+	temp_13056._8 = RDX * ((u64)1);
+	temp_13312._8 = RAX + temp_13056._8;
 	temp_47872._1 = ((u8)0);
 	RAM(temp_13312._8)._1 = temp_47872._1;
-	ADDR_4005F8:; // MOV EAX,dword ptr [RBP + -0xc]
+	ADDR_1014D3:; // MOV EAX,dword ptr [RBP + -0xc]
 	temp_12544._8 = RBP + ((u64)-12);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EAX = temp_48256._4;
 	RAX = EAX;
-	ADDR_4005FB:; // MOVSXD RDX,EAX
-	RDXs = EAXs;
-	ADDR_4005FE:; // LEA RAX,[0x601840]
-	RAX = ((u64)0x601840);
-	ADDR_400605:; // ADD RAX,RDX
+	ADDR_1014D6:; // CDQE
+	RAXs = EAXs;
+	ADDR_1014D8:; // LEA RDX,[0x104840]
+	RDX = ((u64)0x104840);
+	ADDR_1014DF:; // ADD RAX,RDX
 	CF = (u64)(RAX + RDX) < RAX;
 	OF = SIGN(8, RAXs) == SIGN(8, RDXs) && SIGN(8, (i64)(RAXs + RDXs)) != SIGN(8, RDXs);
 	RAX = RAX + RDX;
@@ -1025,10 +1095,10 @@ void int_to_string() {
 	temp_76928._1 = POPCOUNT(8, temp_76800._8);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_400608:; // POP RBP
+	ADDR_1014E2:; // POP RBP
 	RBP = RAM(RSP)._8;
 	RSP = RSP + ((u64)8);
-	ADDR_400609:; // RET
+	ADDR_1014E3:; // RET
 	RIP = RAM(RSP)._8;
 	RSP = RSP + ((u64)8);
 	return;

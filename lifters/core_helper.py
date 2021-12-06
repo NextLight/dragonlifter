@@ -19,6 +19,7 @@ class CoreHelper:
         self.registers_from_offset = {b.offset: b.registers for b in program.registers_blocks}
         self.address_space_name_to_id = {name: id for name, id in program.address_spaces}
         self.address_to_function = {f.address: f for f in program.functions}
+        self.functions_to_export = self.program.functions
 
         self.used_registers_offset: set[int] = set()
         self.used_temp_variables: set[int] = set()
@@ -34,11 +35,13 @@ class CoreHelper:
         (VarKind.SIGNED, 2): 'i16',
         (VarKind.SIGNED, 4): 'i32',
         (VarKind.SIGNED, 8): 'i64',
+        (VarKind.SIGNED, 16): 'i128',
 
         (VarKind.UNSIGNED, 1): 'u8',
         (VarKind.UNSIGNED, 2): 'u16',
         (VarKind.UNSIGNED, 4): 'u32',
         (VarKind.UNSIGNED, 8): 'u64',
+        (VarKind.UNSIGNED, 16): 'u128',
 
         (VarKind.FLOATING, 4): 'f32',
         (VarKind.FLOATING, 8): 'f64',

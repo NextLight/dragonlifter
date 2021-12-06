@@ -1,21 +1,23 @@
 #include "dragonlifter.h"
 
 void calc() {
-	ADDR_400779:; // PUSH RBP
+	ADDR_101655:; // ENDBR64
+	
+	ADDR_101659:; // PUSH RBP
 	temp_59264._8 = RBP;
 	RSP = RSP - ((u64)8);
 	RAM(RSP)._8 = temp_59264._8;
-	ADDR_40077A:; // MOV RBP,RSP
+	ADDR_10165A:; // MOV RBP,RSP
 	RBP = RSP;
-	ADDR_40077D:; // PUSH R12
+	ADDR_10165D:; // PUSH R12
 	temp_59264._8 = R12;
 	RSP = RSP - ((u64)8);
 	RAM(RSP)._8 = temp_59264._8;
-	ADDR_40077F:; // PUSH RBX
+	ADDR_10165F:; // PUSH RBX
 	temp_59264._8 = RBX;
 	RSP = RSP - ((u64)8);
 	RAM(RSP)._8 = temp_59264._8;
-	ADDR_400780:; // SUB RSP,0x40
+	ADDR_101660:; // SUB RSP,0x40
 	CF = RSP < ((u64)64);
 	OF = SIGN(8, RSPs) != SIGN(8, ((i64)64)) && SIGN(8, (i64)(RSPs - ((i64)64))) == SIGN(8, ((i64)64));
 	RSP = RSP - ((u64)64);
@@ -25,125 +27,72 @@ void calc() {
 	temp_76928._1 = POPCOUNT(8, temp_76800._8);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_400784:; // MOV EDX,0x0
+	ADDR_101664:; // MOV EDX,0x0
 	RDX = ((u64)0);
-	ADDR_400789:; // LEA RSI,[0x400bb8]
-	RSI = ((u64)0x400bb8);
-	ADDR_400790:; // LEA RDI,[0x400bc0]
-	RDI = ((u64)0x400bc0);
-	ADDR_400797:; // MOV EAX,0x0
+	ADDR_101669:; // LEA RSI,[0x102000]
+	RSI = ((u64)0x102000);
+	ADDR_101670:; // LEA RDI,[0x102008]
+	RDI = ((u64)0x102008);
+	ADDR_101677:; // MOV EAX,0x0
 	RAX = ((u64)0);
-	ADDR_40079C:; // CALL 0x004001de
+	ADDR_10167C:; // CALL 0x001010aa
 	RSP = RSP - ((u64)8);
-	RAM(RSP)._8 = ((u64)0x4007a1);
+	RAM(RSP)._8 = ((u64)0x101681);
 	print_raw();
-	ADDR_4007A1:; // LEA RDI,[0x400be4]
-	RDI = ((u64)0x400be4);
-	ADDR_4007A8:; // CALL 0x004003a3
+	ADDR_101681:; // LEA RDI,[0x10202c]
+	RDI = ((u64)0x10202c);
+	ADDR_101688:; // CALL 0x00101279
 	RSP = RSP - ((u64)8);
-	RAM(RSP)._8 = ((u64)0x4007ad);
+	RAM(RSP)._8 = ((u64)0x10168d);
 	input_prompt();
-	ADDR_4007AD:; // MOV RDI,RAX
+	ADDR_10168D:; // MOV RDI,RAX
 	RDI = RAX;
-	ADDR_4007B0:; // CALL 0x0040060a
+	ADDR_101690:; // CALL 0x001014e4
 	RSP = RSP - ((u64)8);
-	RAM(RSP)._8 = ((u64)0x4007b5);
+	RAM(RSP)._8 = ((u64)0x101695);
 	string_to_int();
-	ADDR_4007B5:; // MOV dword ptr [RBP + -0x18],EAX
+	ADDR_101695:; // MOV dword ptr [RBP + -0x18],EAX
 	temp_12544._8 = RBP + ((u64)-24);
 	temp_48256._4 = EAX;
 	RAM(temp_12544._8)._4 = temp_48256._4;
-	ADDR_4007B8:; // LEA RDI,[0x400bf2]
-	RDI = ((u64)0x400bf2);
-	ADDR_4007BF:; // CALL 0x004003a3
+	ADDR_101698:; // LEA RDI,[0x10203a]
+	RDI = ((u64)0x10203a);
+	ADDR_10169F:; // CALL 0x00101279
 	RSP = RSP - ((u64)8);
-	RAM(RSP)._8 = ((u64)0x4007c4);
+	RAM(RSP)._8 = ((u64)0x1016a4);
 	input_prompt();
-	ADDR_4007C4:; // MOV qword ptr [RBP + -0x20],RAX
+	ADDR_1016A4:; // MOV qword ptr [RBP + -0x20],RAX
 	temp_12544._8 = RBP + ((u64)-32);
 	temp_48512._8 = RAX;
 	RAM(temp_12544._8)._8 = temp_48512._8;
-	ADDR_4007C8:; // LEA RDI,[0x400bfe]
-	RDI = ((u64)0x400bfe);
-	ADDR_4007CF:; // CALL 0x004003a3
+	ADDR_1016A8:; // LEA RDI,[0x102046]
+	RDI = ((u64)0x102046);
+	ADDR_1016AF:; // CALL 0x00101279
 	RSP = RSP - ((u64)8);
-	RAM(RSP)._8 = ((u64)0x4007d4);
+	RAM(RSP)._8 = ((u64)0x1016b4);
 	input_prompt();
-	ADDR_4007D4:; // MOV RDI,RAX
+	ADDR_1016B4:; // MOV RDI,RAX
 	RDI = RAX;
-	ADDR_4007D7:; // CALL 0x0040060a
+	ADDR_1016B7:; // CALL 0x001014e4
 	RSP = RSP - ((u64)8);
-	RAM(RSP)._8 = ((u64)0x4007dc);
+	RAM(RSP)._8 = ((u64)0x1016bc);
 	string_to_int();
-	ADDR_4007DC:; // MOV dword ptr [RBP + -0x24],EAX
+	ADDR_1016BC:; // MOV dword ptr [RBP + -0x24],EAX
 	temp_12544._8 = RBP + ((u64)-36);
 	temp_48256._4 = EAX;
 	RAM(temp_12544._8)._4 = temp_48256._4;
-	ADDR_4007DF:; // MOV RAX,qword ptr [RBP + -0x20]
+	ADDR_1016BF:; // MOV RAX,qword ptr [RBP + -0x20]
 	temp_12544._8 = RBP + ((u64)-32);
 	temp_48512._8 = RAM(temp_12544._8)._8;
 	RAX = temp_48512._8;
-	ADDR_4007E3:; // MOVZX EAX,byte ptr [RAX]
+	ADDR_1016C3:; // MOVZX EAX,byte ptr [RAX]
 	temp_47872._1 = RAM(RAX)._1;
 	EAX = temp_47872._1;
 	RAX = EAX;
-	ADDR_4007E6:; // MOVSX EAX,AL
+	ADDR_1016C6:; // MOVSX EAX,AL
 	EAXs = ALs;
 	RAX = EAX;
-	ADDR_4007E9:; // CMP EAX,0x2b
-	CF = EAX < ((u32)43);
-	OF = SIGN(4, EAXs) != SIGN(4, ((i32)43)) && SIGN(4, (i32)(EAXs - ((i32)43))) == SIGN(4, ((i32)43));
-	temp_164352._4 = EAX - ((u32)43);
-	SF = temp_164352._4s < ((i32)0);
-	ZF = temp_164352._4 == ((u32)0);
-	temp_76800._4 = temp_164352._4 & ((u32)255);
-	temp_76928._1 = POPCOUNT(4, temp_76800._4);
-	temp_77056._1 = temp_76928._1 & ((u8)1);
-	PF = temp_77056._1 == ((u8)0);
-	ADDR_4007EC:; // JZ 0x00400806
-	if (ZF) goto ADDR_400806;
-	ADDR_4007EE:; // CMP EAX,0x2b
-	CF = EAX < ((u32)43);
-	OF = SIGN(4, EAXs) != SIGN(4, ((i32)43)) && SIGN(4, (i32)(EAXs - ((i32)43))) == SIGN(4, ((i32)43));
-	temp_164352._4 = EAX - ((u32)43);
-	SF = temp_164352._4s < ((i32)0);
-	ZF = temp_164352._4 == ((u32)0);
-	temp_76800._4 = temp_164352._4 & ((u32)255);
-	temp_76928._1 = POPCOUNT(4, temp_76800._4);
-	temp_77056._1 = temp_76928._1 & ((u8)1);
-	PF = temp_77056._1 == ((u8)0);
-	ADDR_4007F1:; // JG 0x004007fa
-	temp_52992._1 = !ZF;
-	temp_53120._1 = OF == SF;
-	temp_53376._1 = temp_52992._1 && temp_53120._1;
-	if (temp_53376._1) goto ADDR_4007FA;
-	ADDR_4007F3:; // CMP EAX,0x2a
-	CF = EAX < ((u32)42);
-	OF = SIGN(4, EAXs) != SIGN(4, ((i32)42)) && SIGN(4, (i32)(EAXs - ((i32)42))) == SIGN(4, ((i32)42));
-	temp_164352._4 = EAX - ((u32)42);
-	SF = temp_164352._4s < ((i32)0);
-	ZF = temp_164352._4 == ((u32)0);
-	temp_76800._4 = temp_164352._4 & ((u32)255);
-	temp_76928._1 = POPCOUNT(4, temp_76800._4);
-	temp_77056._1 = temp_76928._1 & ((u8)1);
-	PF = temp_77056._1 == ((u8)0);
-	ADDR_4007F6:; // JZ 0x0040081e
-	if (ZF) goto ADDR_40081E;
-	ADDR_4007F8:; // JMP 0x00400835
-	goto ADDR_400835;
-	ADDR_4007FA:; // CMP EAX,0x2d
-	CF = EAX < ((u32)45);
-	OF = SIGN(4, EAXs) != SIGN(4, ((i32)45)) && SIGN(4, (i32)(EAXs - ((i32)45))) == SIGN(4, ((i32)45));
-	temp_164352._4 = EAX - ((u32)45);
-	SF = temp_164352._4s < ((i32)0);
-	ZF = temp_164352._4 == ((u32)0);
-	temp_76800._4 = temp_164352._4 & ((u32)255);
-	temp_76928._1 = POPCOUNT(4, temp_76800._4);
-	temp_77056._1 = temp_76928._1 & ((u8)1);
-	PF = temp_77056._1 == ((u8)0);
-	ADDR_4007FD:; // JZ 0x00400813
-	if (ZF) goto ADDR_400813;
-	ADDR_4007FF:; // CMP EAX,0x2f
+	ADDR_1016C9:; // CMP EAX,0x2f
 	CF = EAX < ((u32)47);
 	OF = SIGN(4, EAXs) != SIGN(4, ((i32)47)) && SIGN(4, (i32)(EAXs - ((i32)47))) == SIGN(4, ((i32)47));
 	temp_164352._4 = EAX - ((u32)47);
@@ -153,21 +102,86 @@ void calc() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_400802:; // JZ 0x0040082a
-	if (ZF) goto ADDR_40082A;
-	ADDR_400804:; // JMP 0x00400835
-	goto ADDR_400835;
-	ADDR_400806:; // MOV EDX,dword ptr [RBP + -0x18]
+	ADDR_1016CC:; // JZ 0x0010170b
+	if (ZF) goto ADDR_10170B;
+	ADDR_1016CE:; // CMP EAX,0x2f
+	CF = EAX < ((u32)47);
+	OF = SIGN(4, EAXs) != SIGN(4, ((i32)47)) && SIGN(4, (i32)(EAXs - ((i32)47))) == SIGN(4, ((i32)47));
+	temp_164352._4 = EAX - ((u32)47);
+	SF = temp_164352._4s < ((i32)0);
+	ZF = temp_164352._4 == ((u32)0);
+	temp_76800._4 = temp_164352._4 & ((u32)255);
+	temp_76928._1 = POPCOUNT(4, temp_76800._4);
+	temp_77056._1 = temp_76928._1 & ((u8)1);
+	PF = temp_77056._1 == ((u8)0);
+	ADDR_1016D1:; // JG 0x00101716
+	temp_52992._1 = !ZF;
+	temp_53120._1 = OF == SF;
+	temp_53376._1 = temp_52992._1 && temp_53120._1;
+	if (temp_53376._1) goto ADDR_101716;
+	ADDR_1016D3:; // CMP EAX,0x2d
+	CF = EAX < ((u32)45);
+	OF = SIGN(4, EAXs) != SIGN(4, ((i32)45)) && SIGN(4, (i32)(EAXs - ((i32)45))) == SIGN(4, ((i32)45));
+	temp_164352._4 = EAX - ((u32)45);
+	SF = temp_164352._4s < ((i32)0);
+	ZF = temp_164352._4 == ((u32)0);
+	temp_76800._4 = temp_164352._4 & ((u32)255);
+	temp_76928._1 = POPCOUNT(4, temp_76800._4);
+	temp_77056._1 = temp_76928._1 & ((u8)1);
+	PF = temp_77056._1 == ((u8)0);
+	ADDR_1016D6:; // JZ 0x001016f4
+	if (ZF) goto ADDR_1016F4;
+	ADDR_1016D8:; // CMP EAX,0x2d
+	CF = EAX < ((u32)45);
+	OF = SIGN(4, EAXs) != SIGN(4, ((i32)45)) && SIGN(4, (i32)(EAXs - ((i32)45))) == SIGN(4, ((i32)45));
+	temp_164352._4 = EAX - ((u32)45);
+	SF = temp_164352._4s < ((i32)0);
+	ZF = temp_164352._4 == ((u32)0);
+	temp_76800._4 = temp_164352._4 & ((u32)255);
+	temp_76928._1 = POPCOUNT(4, temp_76800._4);
+	temp_77056._1 = temp_76928._1 & ((u8)1);
+	PF = temp_77056._1 == ((u8)0);
+	ADDR_1016DB:; // JG 0x00101716
+	temp_52992._1 = !ZF;
+	temp_53120._1 = OF == SF;
+	temp_53376._1 = temp_52992._1 && temp_53120._1;
+	if (temp_53376._1) goto ADDR_101716;
+	ADDR_1016DD:; // CMP EAX,0x2a
+	CF = EAX < ((u32)42);
+	OF = SIGN(4, EAXs) != SIGN(4, ((i32)42)) && SIGN(4, (i32)(EAXs - ((i32)42))) == SIGN(4, ((i32)42));
+	temp_164352._4 = EAX - ((u32)42);
+	SF = temp_164352._4s < ((i32)0);
+	ZF = temp_164352._4 == ((u32)0);
+	temp_76800._4 = temp_164352._4 & ((u32)255);
+	temp_76928._1 = POPCOUNT(4, temp_76800._4);
+	temp_77056._1 = temp_76928._1 & ((u8)1);
+	PF = temp_77056._1 == ((u8)0);
+	ADDR_1016E0:; // JZ 0x001016ff
+	if (ZF) goto ADDR_1016FF;
+	ADDR_1016E2:; // CMP EAX,0x2b
+	CF = EAX < ((u32)43);
+	OF = SIGN(4, EAXs) != SIGN(4, ((i32)43)) && SIGN(4, (i32)(EAXs - ((i32)43))) == SIGN(4, ((i32)43));
+	temp_164352._4 = EAX - ((u32)43);
+	SF = temp_164352._4s < ((i32)0);
+	ZF = temp_164352._4 == ((u32)0);
+	temp_76800._4 = temp_164352._4 & ((u32)255);
+	temp_76928._1 = POPCOUNT(4, temp_76800._4);
+	temp_77056._1 = temp_76928._1 & ((u8)1);
+	PF = temp_77056._1 == ((u8)0);
+	ADDR_1016E5:; // JNZ 0x00101716
+	temp_50816._1 = !ZF;
+	if (temp_50816._1) goto ADDR_101716;
+	ADDR_1016E7:; // MOV EDX,dword ptr [RBP + -0x18]
 	temp_12544._8 = RBP + ((u64)-24);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EDX = temp_48256._4;
 	RDX = EDX;
-	ADDR_400809:; // MOV EAX,dword ptr [RBP + -0x24]
+	ADDR_1016EA:; // MOV EAX,dword ptr [RBP + -0x24]
 	temp_12544._8 = RBP + ((u64)-36);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EAX = temp_48256._4;
 	RAX = EAX;
-	ADDR_40080C:; // ADD EAX,EDX
+	ADDR_1016ED:; // ADD EAX,EDX
 	CF = (u32)(EAX + EDX) < EAX;
 	OF = SIGN(4, EAXs) == SIGN(4, EDXs) && SIGN(4, (i32)(EAXs + EDXs)) != SIGN(4, EDXs);
 	EAX = EAX + EDX;
@@ -178,18 +192,18 @@ void calc() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_40080E:; // MOV dword ptr [RBP + -0x14],EAX
+	ADDR_1016EF:; // MOV dword ptr [RBP + -0x14],EAX
 	temp_12544._8 = RBP + ((u64)-20);
 	temp_48256._4 = EAX;
 	RAM(temp_12544._8)._4 = temp_48256._4;
-	ADDR_400811:; // JMP 0x00400835
-	goto ADDR_400835;
-	ADDR_400813:; // MOV EAX,dword ptr [RBP + -0x18]
+	ADDR_1016F2:; // JMP 0x00101716
+	goto ADDR_101716;
+	ADDR_1016F4:; // MOV EAX,dword ptr [RBP + -0x18]
 	temp_12544._8 = RBP + ((u64)-24);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EAX = temp_48256._4;
 	RAX = EAX;
-	ADDR_400816:; // SUB EAX,dword ptr [RBP + -0x24]
+	ADDR_1016F7:; // SUB EAX,dword ptr [RBP + -0x24]
 	temp_12544._8 = RBP + ((u64)-36);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	CF = EAX < temp_48256._4;
@@ -204,18 +218,18 @@ void calc() {
 	temp_76928._1 = POPCOUNT(4, temp_76800._4);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_400819:; // MOV dword ptr [RBP + -0x14],EAX
+	ADDR_1016FA:; // MOV dword ptr [RBP + -0x14],EAX
 	temp_12544._8 = RBP + ((u64)-20);
 	temp_48256._4 = EAX;
 	RAM(temp_12544._8)._4 = temp_48256._4;
-	ADDR_40081C:; // JMP 0x00400835
-	goto ADDR_400835;
-	ADDR_40081E:; // MOV EAX,dword ptr [RBP + -0x18]
+	ADDR_1016FD:; // JMP 0x00101716
+	goto ADDR_101716;
+	ADDR_1016FF:; // MOV EAX,dword ptr [RBP + -0x18]
 	temp_12544._8 = RBP + ((u64)-24);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EAX = temp_48256._4;
 	RAX = EAX;
-	ADDR_400821:; // IMUL EAX,dword ptr [RBP + -0x24]
+	ADDR_101702:; // IMUL EAX,dword ptr [RBP + -0x24]
 	temp_12544._8 = RBP + ((u64)-36);
 	temp_219904._8s = EAXs;
 	temp_48256._4 = RAM(temp_12544._8)._4;
@@ -227,22 +241,22 @@ void calc() {
 	CF = temp_80768._8 != temp_220288._8;
 	OF = CF;
 	RAX = EAX;
-	ADDR_400825:; // MOV dword ptr [RBP + -0x14],EAX
+	ADDR_101706:; // MOV dword ptr [RBP + -0x14],EAX
 	temp_12544._8 = RBP + ((u64)-20);
 	temp_48256._4 = EAX;
 	RAM(temp_12544._8)._4 = temp_48256._4;
-	ADDR_400828:; // JMP 0x00400835
-	goto ADDR_400835;
-	ADDR_40082A:; // MOV EAX,dword ptr [RBP + -0x18]
+	ADDR_101709:; // JMP 0x00101716
+	goto ADDR_101716;
+	ADDR_10170B:; // MOV EAX,dword ptr [RBP + -0x18]
 	temp_12544._8 = RBP + ((u64)-24);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EAX = temp_48256._4;
 	RAX = EAX;
-	ADDR_40082D:; // CDQ
+	ADDR_10170E:; // CDQ
 	temp_160768._8s = EAXs;
 	EDX = (temp_160768._8 / 0x100000000);
 	RDX = EDX;
-	ADDR_40082E:; // IDIV dword ptr [RBP + -0x24]
+	ADDR_10170F:; // IDIV dword ptr [RBP + -0x24]
 	temp_12544._8 = RBP + ((u64)-36);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	temp_213120._8s = temp_48256._4s;
@@ -256,59 +270,59 @@ void calc() {
 	temp_214400._8s = temp_213760._8s % temp_213120._8s;
 	EDX = (temp_214400._8 / 0x1);
 	RDX = EDX;
-	ADDR_400831:; // MOV dword ptr [RBP + -0x14],EAX
+	ADDR_101712:; // MOV dword ptr [RBP + -0x14],EAX
 	temp_12544._8 = RBP + ((u64)-20);
 	temp_48256._4 = EAX;
 	RAM(temp_12544._8)._4 = temp_48256._4;
-	ADDR_400834:; // NOP
+	ADDR_101715:; // NOP
 	
-	ADDR_400835:; // MOV EAX,dword ptr [RBP + -0x14]
+	ADDR_101716:; // MOV EAX,dword ptr [RBP + -0x14]
 	temp_12544._8 = RBP + ((u64)-20);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EAX = temp_48256._4;
 	RAX = EAX;
-	ADDR_400838:; // MOV EDI,EAX
+	ADDR_101719:; // MOV EDI,EAX
 	EDI = EAX;
 	RDI = EDI;
-	ADDR_40083A:; // CALL 0x004003d2
+	ADDR_10171B:; // CALL 0x001012ac
 	RSP = RSP - ((u64)8);
-	RAM(RSP)._8 = ((u64)0x40083f);
+	RAM(RSP)._8 = ((u64)0x101720);
 	int_to_string();
-	ADDR_40083F:; // MOV RBX,RAX
+	ADDR_101720:; // MOV RBX,RAX
 	RBX = RAX;
-	ADDR_400842:; // MOV EAX,dword ptr [RBP + -0x24]
+	ADDR_101723:; // MOV EAX,dword ptr [RBP + -0x24]
 	temp_12544._8 = RBP + ((u64)-36);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EAX = temp_48256._4;
 	RAX = EAX;
-	ADDR_400845:; // MOV EDI,EAX
+	ADDR_101726:; // MOV EDI,EAX
 	EDI = EAX;
 	RDI = EDI;
-	ADDR_400847:; // CALL 0x004003d2
+	ADDR_101728:; // CALL 0x001012ac
 	RSP = RSP - ((u64)8);
-	RAM(RSP)._8 = ((u64)0x40084c);
+	RAM(RSP)._8 = ((u64)0x10172d);
 	int_to_string();
-	ADDR_40084C:; // MOV R12,RAX
+	ADDR_10172D:; // MOV R12,RAX
 	R12 = RAX;
-	ADDR_40084F:; // MOV EAX,dword ptr [RBP + -0x18]
+	ADDR_101730:; // MOV EAX,dword ptr [RBP + -0x18]
 	temp_12544._8 = RBP + ((u64)-24);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EAX = temp_48256._4;
 	RAX = EAX;
-	ADDR_400852:; // MOV EDI,EAX
+	ADDR_101733:; // MOV EDI,EAX
 	EDI = EAX;
 	RDI = EDI;
-	ADDR_400854:; // CALL 0x004003d2
+	ADDR_101735:; // CALL 0x001012ac
 	RSP = RSP - ((u64)8);
-	RAM(RSP)._8 = ((u64)0x400859);
+	RAM(RSP)._8 = ((u64)0x10173a);
 	int_to_string();
-	ADDR_400859:; // MOV RDI,RAX
+	ADDR_10173A:; // MOV RDI,RAX
 	RDI = RAX;
-	ADDR_40085C:; // MOV RAX,qword ptr [RBP + -0x20]
+	ADDR_10173D:; // MOV RAX,qword ptr [RBP + -0x20]
 	temp_12544._8 = RBP + ((u64)-32);
 	temp_48512._8 = RAM(temp_12544._8)._8;
 	RAX = temp_48512._8;
-	ADDR_400860:; // SUB RSP,0x8
+	ADDR_101741:; // SUB RSP,0x8
 	CF = RSP < ((u64)8);
 	OF = SIGN(8, RSPs) != SIGN(8, ((i64)8)) && SIGN(8, (i64)(RSPs - ((i64)8))) == SIGN(8, ((i64)8));
 	RSP = RSP - ((u64)8);
@@ -318,37 +332,37 @@ void calc() {
 	temp_76928._1 = POPCOUNT(8, temp_76800._8);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_400864:; // PUSH 0x0
+	ADDR_101745:; // PUSH 0x0
 	temp_259968._8 = ((u64)0);
 	RSP = RSP - ((u64)8);
 	RAM(RSP)._8 = temp_259968._8;
-	ADDR_400866:; // LEA RDX,[0x400bb8]
-	RDX = ((u64)0x400bb8);
-	ADDR_40086D:; // PUSH RDX
+	ADDR_101747:; // LEA RDX,[0x102000]
+	RDX = ((u64)0x102000);
+	ADDR_10174E:; // PUSH RDX
 	temp_59264._8 = RDX;
 	RSP = RSP - ((u64)8);
 	RAM(RSP)._8 = temp_59264._8;
-	ADDR_40086E:; // PUSH RBX
+	ADDR_10174F:; // PUSH RBX
 	temp_59264._8 = RBX;
 	RSP = RSP - ((u64)8);
 	RAM(RSP)._8 = temp_59264._8;
-	ADDR_40086F:; // LEA R9,[0x400c0d]
-	R9 = ((u64)0x400c0d);
-	ADDR_400876:; // MOV R8,R12
+	ADDR_101750:; // LEA R9,[0x102055]
+	R9 = ((u64)0x102055);
+	ADDR_101757:; // MOV R8,R12
 	R8 = R12;
-	ADDR_400879:; // LEA RCX,[0x400c11]
-	RCX = ((u64)0x400c11);
-	ADDR_400880:; // MOV RDX,RAX
+	ADDR_10175A:; // LEA RCX,[0x102059]
+	RCX = ((u64)0x102059);
+	ADDR_101761:; // MOV RDX,RAX
 	RDX = RAX;
-	ADDR_400883:; // LEA RSI,[0x400c11]
-	RSI = ((u64)0x400c11);
-	ADDR_40088A:; // MOV EAX,0x0
+	ADDR_101764:; // LEA RSI,[0x102059]
+	RSI = ((u64)0x102059);
+	ADDR_10176B:; // MOV EAX,0x0
 	RAX = ((u64)0);
-	ADDR_40088F:; // CALL 0x004001de
+	ADDR_101770:; // CALL 0x001010aa
 	RSP = RSP - ((u64)8);
-	RAM(RSP)._8 = ((u64)0x400894);
+	RAM(RSP)._8 = ((u64)0x101775);
 	print_raw();
-	ADDR_400894:; // ADD RSP,0x20
+	ADDR_101775:; // ADD RSP,0x20
 	CF = (u64)(RSP + ((u64)32)) < RSP;
 	OF = SIGN(8, RSPs) == SIGN(8, ((i64)32)) && SIGN(8, (i64)(RSPs + ((i64)32))) != SIGN(8, ((i64)32));
 	RSP = RSP + ((u64)32);
@@ -358,21 +372,21 @@ void calc() {
 	temp_76928._1 = POPCOUNT(8, temp_76800._8);
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
-	ADDR_400898:; // NOP
+	ADDR_101779:; // NOP
 	
-	ADDR_400899:; // LEA RSP,[RBP + -0x10]
+	ADDR_10177A:; // LEA RSP,[RBP + -0x10]
 	temp_12544._8 = RBP + ((u64)-16);
 	RSP = temp_12544._8;
-	ADDR_40089D:; // POP RBX
+	ADDR_10177E:; // POP RBX
 	RBX = RAM(RSP)._8;
 	RSP = RSP + ((u64)8);
-	ADDR_40089E:; // POP R12
+	ADDR_10177F:; // POP R12
 	R12 = RAM(RSP)._8;
 	RSP = RSP + ((u64)8);
-	ADDR_4008A0:; // POP RBP
+	ADDR_101781:; // POP RBP
 	RBP = RAM(RSP)._8;
 	RSP = RSP + ((u64)8);
-	ADDR_4008A1:; // RET
+	ADDR_101782:; // RET
 	RIP = RAM(RSP)._8;
 	RSP = RSP + ((u64)8);
 	return;
