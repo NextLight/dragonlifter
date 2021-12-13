@@ -33,7 +33,10 @@ class FunctionLifter:
         return '\n'.join(map(self.lift_instruction, self.function.instructions))
 
     def generate_signature(self) -> str:
-        return f'void {self.function.name}()'
+        return f'void {self.generate_function_name()}()'
+
+    def generate_function_name(self) -> str:
+        return self.function.name
     
     def lift_instruction(self, instr: Instruction) -> str:
         return self.lifter.InstructionLifter(self.lifter, instr).lift()

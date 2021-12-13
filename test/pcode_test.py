@@ -14,6 +14,8 @@ from ghidra_types import *
 from lifters.core_lifter import CoreLifter
 from lifters.pcode_lifter import Output, OutputSigned, PcodeLifter, Var, VarKind
 
+from .test_utils import dummy_program
+
 
 def setup_module():
     try:
@@ -43,7 +45,7 @@ def run_c_code(code: bytes) -> str:
         raise e
 
 def run_pcodes(pcodes: list[Pcode], out_var: Var):
-    dragonlifter = Dragonlifter._EMPTY
+    dragonlifter = Dragonlifter.with_plugins(dummy_program(), [])
     core_lifter = CoreLifter(dragonlifter)
     core_lifter.setup_default_types()
     core_lifter.setup_math()
