@@ -35,5 +35,14 @@ class FunctionLifter:
     def generate_signature(self) -> str:
         return f'void {self.function.name}()'
     
+    def generate_labels_jumptable(self) -> str:
+        addresses = {i.address for i in self.function.instructions}
+        min_addr = min(addresses)
+        max_addr = max(addresses)
+        return '\n'.join((
+            f'static const void* labels[] = {{ {",".join(self.lifter.core.instruction_label(i) if i in addresses else "NULL" for i in range(min_addr, max_addr+1))} }}',
+            f'static const size_t labels_base_addr = {min_addr};'
+        ))
+    
     def lift_instruction(self, instr: Instruction) -> str:
         return self.lifter.InstructionLifter(self.lifter, instr).lift()
