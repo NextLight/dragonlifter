@@ -1,4 +1,5 @@
 import argparse
+from importlib.abc import Loader
 import importlib.util
 import inspect
 import pathlib
@@ -75,8 +76,10 @@ class Dragonlifter:
 
 def _import_module_by_path(path: str):
     spec = importlib.util.spec_from_file_location(path, path)
+    assert spec is not None
     m = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = m
+    assert isinstance(spec.loader, Loader)
     spec.loader.exec_module(m)
     return m
 

@@ -1,4 +1,7 @@
+import sys
+from test.test_utils import dummy_program
 from types import ModuleType
+
 from dragonlifter import Dragonlifter
 from ghidra_types import *
 from lifters.core_helper import CoreHelper
@@ -7,7 +10,6 @@ from lifters.function_lifter import FunctionLifter
 from lifters.instruction_lifter import InstructionLifter
 from lifters.pcode_lifter import PcodeLifter
 from lifters.program_lifter import ProgramLifter
-from test.test_utils import dummy_program
 
 TEST_FUNCTION = Function('test', 0, [])
 PROGRAM_WITH_TEST_FUNCTION = dummy_program(functions=[TEST_FUNCTION])
@@ -20,10 +22,13 @@ class FunctionLifterNameB(FunctionLifter):
     def generate_function_name(self) -> str:
         return super().generate_function_name() + 'B'
 
-def fake_module(classes):
+def fake_module(classes: list[type]) -> ModuleType:
     m = ModuleType('fake')
+    sys.modules['fake'] = m
     for c in classes:
-        setattr(m, c.__name__, c)
+        fake_c = type(c.__name__, (c,), {})
+        fake_c.__module__ = 'fake'
+        setattr(m, c.__name__, fake_c)
     return m
 
 
