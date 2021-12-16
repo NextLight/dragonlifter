@@ -21,7 +21,10 @@ class FunctionLifter:
         ))
 
     def generate_header(self) -> str:
-        return f'{self.generate_signature()} {{'
+        return '\n'.join((
+            f'{self.generate_signature()} {{',
+            self.generate_labels_jumptable(),
+        ))
 
     def generate_footer(self) -> str:
         return '}'
@@ -40,8 +43,8 @@ class FunctionLifter:
         min_addr = min(addresses)
         max_addr = max(addresses)
         return '\n'.join((
-            f'static const void* labels[] = {{ {",".join(self.lifter.core.instruction_label(i) if i in addresses else "NULL" for i in range(min_addr, max_addr+1))} }}',
-            f'static const size_t labels_base_addr = {min_addr};'
+            f'static const void* labels[] = {{ {",".join("&&" + self.lifter.core.instruction_label(i) if i in addresses else "NULL" for i in range(min_addr, max_addr+1))} }};',
+            f'static const size_t labels_base_address = {min_addr};'
         ))
     
     def lift_instruction(self, instr: Instruction) -> str:

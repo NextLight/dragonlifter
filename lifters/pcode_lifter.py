@@ -150,7 +150,7 @@ class PcodeLifter:
         return f'if ({self.var(in1)}) {self._branch(in0)}'
 
     def _branchind(self, in0: Input):
-        pass
+        return f'goto LOCAL_LABEL({self.var(in0)});'
 
     def _call(self, in0: Input):
         assert in0.type == VarnodeType.RAM
@@ -371,11 +371,17 @@ class PcodeLifter:
 
     def _piece(self, out: Output, in0: Input, in1: Input):
         assert in0.size + in1.size == out.size
-        return f'{self.var(out)} = {self.var(in0)} * {hex(2 ** (in1.size * self.core.byte_size))} | {self.var(in1)};'
+        return (
+            f'{self.var(out)} = {self.var(in0)} * '
+            f'(({self.size_and_kind_to_type(in0.size, VarKind.UNSIGNED)})1 << {in1.size * self.core.byte_size}) | {self.var(in1)};'
+        )
 
     def _subpiece(self, out: Output, in0: Input, in1: Input):
         assert in1.type == VarnodeType.CONSTANT
-        return f'{self.var(out)} = ({self.var(in0)} / {hex(2 ** (in1.value * self.core.byte_size))});'
+        return (
+            f'{self.var(out)} = {self.var(in0)} / '
+            f'(({self.size_and_kind_to_type(in0.size, VarKind.UNSIGNED)})1 << {in1.value * self.core.byte_size});'
+        )
 
     #def _cast(self): raise NotImplementedError("P-code CAST is not implemented yet.")
     #def _ptradd(self): raise NotImplementedError("P-code PTRADD is not implemented yet.")

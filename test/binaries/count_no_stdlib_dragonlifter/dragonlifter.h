@@ -27,28 +27,26 @@ typedef union {
 	i16 _2s;
 	i32 _4s;
 	i64 _8s;
-	i128 _16s;
 	u8 _1;
 	u16 _2;
 	u32 _4;
 	u64 _8;
-	u128 _16;
 	f32 _4f;
 	f64 _8f;
 	f80 _10f;
+	i128 _16s;
+	u128 _16;
 } varnode_t;
 typedef struct { address_t addr; byte * ptr; } memory_block_t;
-typedef struct { address_t addr; funcptr_t func; } addr_to_func_t;
 
 
 extern byte memory[];
 extern byte stack[];
 extern const memory_block_t memory_blocks[];
 extern const size_t memory_blocks_count;
-extern varnode_t temp_76800, temp_364544, temp_12800, temp_164352, temp_90624, temp_13312, temp_91136, temp_78848, temp_226304, temp_79360, temp_213504, temp_86912, temp_214016, temp_91392, temp_87424, temp_165376, temp_13952, temp_87936, temp_51200, temp_80000, temp_358528, temp_92416, temp_88448, temp_51712, temp_47744, temp_220032, temp_52224, temp_89472, temp_48768, temp_89984, temp_48256, temp_76928, temp_53376, temp_77952, temp_90752, temp_78464, temp_91264, temp_50816, temp_91776, temp_333440, temp_86016, temp_213120, temp_86528, temp_332288, temp_78592, temp_340736, temp_332800, temp_79104, temp_226560, temp_333312, temp_79616, temp_227072, temp_88064, temp_358656, temp_162048, temp_88576, temp_89088, temp_163072, temp_220672, temp_77696, temp_12544, temp_48384, temp_77056, temp_47872, temp_90368, temp_78080, temp_13056, temp_21248, temp_164608, temp_357120, temp_86144, temp_213248, temp_86656, temp_213760, temp_340864, temp_332928, temp_87680, temp_79744, temp_259968, temp_92160, temp_51456, temp_88704, temp_80768, temp_89216, temp_220288, temp_52992, temp_59264, temp_48512, temp_90496, temp_357248, temp_91008, temp_78720, temp_226176, temp_79232, temp_226688, temp_92032, temp_77824, temp_86272, temp_213376, temp_86784, temp_160768, temp_87296, temp_214400, temp_87808, temp_79872, temp_92288, temp_88832, temp_219904, temp_89344, temp_48640, temp_77440, temp_89856, temp_53120;
+extern varnode_t temp_76800, temp_364544, temp_12800, temp_164352, temp_90624, temp_13312, temp_91136, temp_78848, temp_226304, temp_79360, temp_86912, temp_164864, temp_91392, temp_87424, temp_165376, temp_87936, temp_51200, temp_80000, temp_358528, temp_92416, temp_88448, temp_47744, temp_52224, temp_89472, temp_48768, temp_89984, temp_48256, temp_76928, temp_53376, temp_77952, temp_90752, temp_78464, temp_91264, temp_50816, temp_91776, temp_333440, temp_86016, temp_86528, temp_332288, temp_20992, temp_78592, temp_340736, temp_79104, temp_226560, temp_333312, temp_79616, temp_227072, temp_88064, temp_358656, temp_162048, temp_88576, temp_89088, temp_163072, temp_77696, temp_12544, temp_48384, temp_77056, temp_47872, temp_90368, temp_78080, temp_13056, temp_21248, temp_164608, temp_357120, temp_86144, temp_86656, temp_340864, temp_87680, temp_79744, temp_92160, temp_51456, temp_88704, temp_166656, temp_80768, temp_89216, temp_52992, temp_59264, temp_48512, temp_90496, temp_357248, temp_91008, temp_78720, temp_226176, temp_79232, temp_226688, temp_92032, temp_77824, temp_86272, temp_86784, temp_87296, temp_87808, temp_79872, temp_92288, temp_88832, temp_89344, temp_48640, temp_77440, temp_89856, temp_53120;
 extern byte registers[];
-extern const addr_to_func_t functions[];
-extern const size_t functions_count;
+extern u64 __instruction_count;
 
 
 #define SIGN(sz, v) ((v) >= 0)
@@ -182,18 +180,6 @@ extern const size_t functions_count;
 #define DL ((varnode_t*)&registers[16])->_1
 #define DLs ((varnode_t*)&registers[16])->_1s
 #define DLf ((varnode_t*)&registers[16])->_1f
-#define RBX ((varnode_t*)&registers[24])->_8
-#define RBXs ((varnode_t*)&registers[24])->_8s
-#define RBXf ((varnode_t*)&registers[24])->_8f
-#define EBX ((varnode_t*)&registers[24])->_4
-#define EBXs ((varnode_t*)&registers[24])->_4s
-#define EBXf ((varnode_t*)&registers[24])->_4f
-#define BX ((varnode_t*)&registers[24])->_2
-#define BXs ((varnode_t*)&registers[24])->_2s
-#define BXf ((varnode_t*)&registers[24])->_2f
-#define BL ((varnode_t*)&registers[24])->_1
-#define BLs ((varnode_t*)&registers[24])->_1s
-#define BLf ((varnode_t*)&registers[24])->_1f
 #define RSP ((varnode_t*)&registers[32])->_8
 #define RSPs ((varnode_t*)&registers[32])->_8s
 #define RSPf ((varnode_t*)&registers[32])->_8f
@@ -242,18 +228,6 @@ extern const size_t functions_count;
 #define YMM5 ((varnode_t*)&registers[4768])->_32
 #define YMM5s ((varnode_t*)&registers[4768])->_32s
 #define YMM5f ((varnode_t*)&registers[4768])->_32f
-#define R12 ((varnode_t*)&registers[160])->_8
-#define R12s ((varnode_t*)&registers[160])->_8s
-#define R12f ((varnode_t*)&registers[160])->_8f
-#define R12D ((varnode_t*)&registers[160])->_4
-#define R12Ds ((varnode_t*)&registers[160])->_4s
-#define R12Df ((varnode_t*)&registers[160])->_4f
-#define R12W ((varnode_t*)&registers[160])->_2
-#define R12Ws ((varnode_t*)&registers[160])->_2s
-#define R12Wf ((varnode_t*)&registers[160])->_2f
-#define R12B ((varnode_t*)&registers[160])->_1
-#define R12Bs ((varnode_t*)&registers[160])->_1s
-#define R12Bf ((varnode_t*)&registers[160])->_1f
 #define RBP ((varnode_t*)&registers[40])->_8
 #define RBPs ((varnode_t*)&registers[40])->_8s
 #define RBPf ((varnode_t*)&registers[40])->_8f
@@ -266,18 +240,6 @@ extern const size_t functions_count;
 #define BPL ((varnode_t*)&registers[40])->_1
 #define BPLs ((varnode_t*)&registers[40])->_1s
 #define BPLf ((varnode_t*)&registers[40])->_1f
-#define R13 ((varnode_t*)&registers[168])->_8
-#define R13s ((varnode_t*)&registers[168])->_8s
-#define R13f ((varnode_t*)&registers[168])->_8f
-#define R13D ((varnode_t*)&registers[168])->_4
-#define R13Ds ((varnode_t*)&registers[168])->_4s
-#define R13Df ((varnode_t*)&registers[168])->_4f
-#define R13W ((varnode_t*)&registers[168])->_2
-#define R13Ws ((varnode_t*)&registers[168])->_2s
-#define R13Wf ((varnode_t*)&registers[168])->_2f
-#define R13B ((varnode_t*)&registers[168])->_1
-#define R13Bs ((varnode_t*)&registers[168])->_1s
-#define R13Bf ((varnode_t*)&registers[168])->_1f
 #define RSI ((varnode_t*)&registers[48])->_8
 #define RSIs ((varnode_t*)&registers[48])->_8s
 #define RSIf ((varnode_t*)&registers[48])->_8f
@@ -290,18 +252,6 @@ extern const size_t functions_count;
 #define SIL ((varnode_t*)&registers[48])->_1
 #define SILs ((varnode_t*)&registers[48])->_1s
 #define SILf ((varnode_t*)&registers[48])->_1f
-#define R14 ((varnode_t*)&registers[176])->_8
-#define R14s ((varnode_t*)&registers[176])->_8s
-#define R14f ((varnode_t*)&registers[176])->_8f
-#define R14D ((varnode_t*)&registers[176])->_4
-#define R14Ds ((varnode_t*)&registers[176])->_4s
-#define R14Df ((varnode_t*)&registers[176])->_4f
-#define R14W ((varnode_t*)&registers[176])->_2
-#define R14Ws ((varnode_t*)&registers[176])->_2s
-#define R14Wf ((varnode_t*)&registers[176])->_2f
-#define R14B ((varnode_t*)&registers[176])->_1
-#define R14Bs ((varnode_t*)&registers[176])->_1s
-#define R14Bf ((varnode_t*)&registers[176])->_1f
 #define RDI ((varnode_t*)&registers[56])->_8
 #define RDIs ((varnode_t*)&registers[56])->_8s
 #define RDIf ((varnode_t*)&registers[56])->_8f
@@ -314,18 +264,6 @@ extern const size_t functions_count;
 #define DIL ((varnode_t*)&registers[56])->_1
 #define DILs ((varnode_t*)&registers[56])->_1s
 #define DILf ((varnode_t*)&registers[56])->_1f
-#define R15 ((varnode_t*)&registers[184])->_8
-#define R15s ((varnode_t*)&registers[184])->_8s
-#define R15f ((varnode_t*)&registers[184])->_8f
-#define R15D ((varnode_t*)&registers[184])->_4
-#define R15Ds ((varnode_t*)&registers[184])->_4s
-#define R15Df ((varnode_t*)&registers[184])->_4f
-#define R15W ((varnode_t*)&registers[184])->_2
-#define R15Ws ((varnode_t*)&registers[184])->_2s
-#define R15Wf ((varnode_t*)&registers[184])->_2f
-#define R15B ((varnode_t*)&registers[184])->_1
-#define R15Bs ((varnode_t*)&registers[184])->_1s
-#define R15Bf ((varnode_t*)&registers[184])->_1f
 #define XMM2 ((varnode_t*)&registers[4672])->_16
 #define XMM2s ((varnode_t*)&registers[4672])->_16s
 #define XMM2f ((varnode_t*)&registers[4672])->_16f
@@ -399,9 +337,7 @@ extern const size_t functions_count;
 #define YMM7s ((varnode_t*)&registers[4832])->_32s
 #define YMM7f ((varnode_t*)&registers[4832])->_32f
 
-#define CALL_FUNCTION_AT(addr) function_binary_search(functions, functions_count, addr)()
 #define CALLOTHER(f, ...) CALLOTHER_##f(__VA_ARGS__)
-#define LOCAL_LABEL(v) *labels[v - labels_base_address]
 
 
 
@@ -430,27 +366,10 @@ extern void input();
 extern void input_prompt();
 extern void int_to_string();
 extern void string_to_int();
-extern void bin();
-extern void calc();
-extern void bitwise_and();
-extern void bitwise_or();
-extern void bitwise_xor();
-extern void calc_bitwise();
-extern void get_square();
 extern void _start();
+#define CALLOTHER_syscall() __dispatch_syscall(RAX)
 
-static inline funcptr_t function_binary_search(const addr_to_func_t * arr, size_t size, address_t addr) {
-	size_t l = 0, r = size;
-	while (l < r) {
-		size_t m = (l + r) / 2;
-		if (arr[m].addr == addr)
-		return arr[m].func;
-		else if (arr[m].addr > addr)
-		r = m;
-		else
-		l = m + 1;
-	}
-	// assert(0);
-}
+void __print_instruction_count() { printf("count: %llu\n", __instruction_count); }
 
-#include "dragonlifter_user.h"
+
+#include "syscalls.h"

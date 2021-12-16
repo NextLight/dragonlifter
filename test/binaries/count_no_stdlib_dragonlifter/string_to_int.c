@@ -1,29 +1,34 @@
 #include "dragonlifter.h"
 
 void string_to_int() {
-	static const void* labels[] = { &&ADDR_1014E4,NULL,NULL,NULL,&&ADDR_1014E8,&&ADDR_1014E9,NULL,NULL,&&ADDR_1014EC,NULL,NULL,NULL,&&ADDR_1014F0,NULL,NULL,NULL,&&ADDR_1014F4,NULL,NULL,&&ADDR_1014F7,NULL,&&ADDR_1014F9,NULL,NULL,&&ADDR_1014FC,NULL,NULL,&&ADDR_1014FF,NULL,NULL,&&ADDR_101502,NULL,NULL,NULL,&&ADDR_101506,NULL,&&ADDR_101508,NULL,NULL,NULL,NULL,&&ADDR_10150D,NULL,NULL,NULL,NULL,NULL,NULL,&&ADDR_101514,NULL,NULL,NULL,&&ADDR_101518,NULL,NULL,NULL,&&ADDR_10151C,NULL,&&ADDR_10151E,NULL,NULL,&&ADDR_101521,NULL,&&ADDR_101523,NULL,NULL,&&ADDR_101526,NULL,&&ADDR_101528,NULL,&&ADDR_10152A,NULL,NULL,&&ADDR_10152D,NULL,NULL,NULL,&&ADDR_101531,NULL,NULL,&&ADDR_101534,NULL,NULL,&&ADDR_101537,NULL,NULL,&&ADDR_10153A,NULL,NULL,&&ADDR_10153D,NULL,NULL,NULL,NULL,&&ADDR_101542,NULL,NULL,NULL,&&ADDR_101546,NULL,NULL,&&ADDR_101549,NULL,&&ADDR_10154B,NULL,&&ADDR_10154D,NULL,NULL,NULL,&&ADDR_101551,NULL,&&ADDR_101553,NULL,NULL,&&ADDR_101556,NULL,&&ADDR_101558,NULL,&&ADDR_10155A,NULL,NULL,&&ADDR_10155D,&&ADDR_10155E };
-	static const size_t labels_base_address = 1053924;
 	ADDR_1014E4:; // ENDBR64
+	++__instruction_count;
 	
 	ADDR_1014E8:; // PUSH RBP
+	++__instruction_count;
 	temp_59264._8 = RBP;
 	RSP = RSP - ((u64)8);
 	RAM(RSP)._8 = temp_59264._8;
 	ADDR_1014E9:; // MOV RBP,RSP
+	++__instruction_count;
 	RBP = RSP;
 	ADDR_1014EC:; // MOV qword ptr [RBP + -0x28],RDI
+	++__instruction_count;
 	temp_12544._8 = RBP + ((u64)-40);
 	temp_48512._8 = RDI;
 	RAM(temp_12544._8)._8 = temp_48512._8;
 	ADDR_1014F0:; // MOV RAX,qword ptr [RBP + -0x28]
+	++__instruction_count;
 	temp_12544._8 = RBP + ((u64)-40);
 	temp_48512._8 = RAM(temp_12544._8)._8;
 	RAX = temp_48512._8;
 	ADDR_1014F4:; // MOVZX EAX,byte ptr [RAX]
+	++__instruction_count;
 	temp_47872._1 = RAM(RAX)._1;
 	EAX = temp_47872._1;
 	RAX = EAX;
 	ADDR_1014F7:; // CMP AL,0x2d
+	++__instruction_count;
 	CF = AL < ((u8)45);
 	OF = SIGN(1, ALs) != SIGN(1, ((i8)45)) && SIGN(1, (i8)(ALs - ((i8)45))) == SIGN(1, ((i8)45));
 	temp_162048._1 = AL - ((u8)45);
@@ -34,15 +39,19 @@ void string_to_int() {
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
 	ADDR_1014F9:; // SETZ AL
+	++__instruction_count;
 	AL = ZF;
 	ADDR_1014FC:; // MOVZX EAX,AL
+	++__instruction_count;
 	EAX = AL;
 	RAX = EAX;
 	ADDR_1014FF:; // MOV dword ptr [RBP + -0x14],EAX
+	++__instruction_count;
 	temp_12544._8 = RBP + ((u64)-20);
 	temp_48256._4 = EAX;
 	RAM(temp_12544._8)._4 = temp_48256._4;
 	ADDR_101502:; // CMP dword ptr [RBP + -0x14],0x0
+	++__instruction_count;
 	temp_12544._8 = RBP + ((u64)-20);
 	temp_48384._4 = RAM(temp_12544._8)._4;
 	CF = temp_48384._4 < ((u32)0);
@@ -57,8 +66,10 @@ void string_to_int() {
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
 	ADDR_101506:; // JZ 0x0010150d
+	++__instruction_count;
 	if (ZF) goto ADDR_10150D;
 	ADDR_101508:; // ADD qword ptr [RBP + -0x28],0x1
+	++__instruction_count;
 	temp_12544._8 = RBP + ((u64)-40);
 	temp_48640._8 = RAM(temp_12544._8)._8;
 	CF = (u64)(temp_48640._8 + ((u64)1)) < temp_48640._8;
@@ -77,28 +88,35 @@ void string_to_int() {
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
 	ADDR_10150D:; // MOV dword ptr [RBP + -0x4],0x0
+	++__instruction_count;
 	temp_12544._8 = RBP + ((u64)-4);
 	temp_48384._4 = ((u32)0);
 	RAM(temp_12544._8)._4 = temp_48384._4;
 	ADDR_101514:; // MOV RAX,qword ptr [RBP + -0x28]
+	++__instruction_count;
 	temp_12544._8 = RBP + ((u64)-40);
 	temp_48512._8 = RAM(temp_12544._8)._8;
 	RAX = temp_48512._8;
 	ADDR_101518:; // MOV qword ptr [RBP + -0x10],RAX
+	++__instruction_count;
 	temp_12544._8 = RBP + ((u64)-16);
 	temp_48512._8 = RAX;
 	RAM(temp_12544._8)._8 = temp_48512._8;
 	ADDR_10151C:; // JMP 0x00101542
+	++__instruction_count;
 	goto ADDR_101542;
 	ADDR_10151E:; // MOV EDX,dword ptr [RBP + -0x4]
+	++__instruction_count;
 	temp_12544._8 = RBP + ((u64)-4);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EDX = temp_48256._4;
 	RDX = EDX;
 	ADDR_101521:; // MOV EAX,EDX
+	++__instruction_count;
 	EAX = EDX;
 	RAX = EAX;
 	ADDR_101523:; // SHL EAX,0x2
+	++__instruction_count;
 	temp_340736._4 = ((u32)2) & ((u32)31);
 	temp_340864._4 = EAX;
 	EAX = EAX << temp_340736._4;
@@ -138,6 +156,7 @@ void string_to_int() {
 	temp_80000._1 = temp_77440._1 & temp_79616._1;
 	PF = temp_79872._1 | temp_80000._1;
 	ADDR_101526:; // ADD EAX,EDX
+	++__instruction_count;
 	CF = (u32)(EAX + EDX) < EAX;
 	OF = SIGN(4, EAXs) == SIGN(4, EDXs) && SIGN(4, (i32)(EAXs + EDXs)) != SIGN(4, EDXs);
 	EAX = EAX + EDX;
@@ -149,6 +168,7 @@ void string_to_int() {
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
 	ADDR_101528:; // ADD EAX,EAX
+	++__instruction_count;
 	CF = (u32)(EAX + EAX) < EAX;
 	OF = SIGN(4, EAXs) == SIGN(4, EAXs) && SIGN(4, (i32)(EAXs + EAXs)) != SIGN(4, EAXs);
 	EAX = EAX + EAX;
@@ -160,21 +180,26 @@ void string_to_int() {
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
 	ADDR_10152A:; // MOV dword ptr [RBP + -0x4],EAX
+	++__instruction_count;
 	temp_12544._8 = RBP + ((u64)-4);
 	temp_48256._4 = EAX;
 	RAM(temp_12544._8)._4 = temp_48256._4;
 	ADDR_10152D:; // MOV RAX,qword ptr [RBP + -0x10]
+	++__instruction_count;
 	temp_12544._8 = RBP + ((u64)-16);
 	temp_48512._8 = RAM(temp_12544._8)._8;
 	RAX = temp_48512._8;
 	ADDR_101531:; // MOVZX EAX,byte ptr [RAX]
+	++__instruction_count;
 	temp_47872._1 = RAM(RAX)._1;
 	EAX = temp_47872._1;
 	RAX = EAX;
 	ADDR_101534:; // MOVSX EAX,AL
+	++__instruction_count;
 	EAXs = ALs;
 	RAX = EAX;
 	ADDR_101537:; // SUB EAX,0x30
+	++__instruction_count;
 	CF = EAX < ((u32)48);
 	OF = SIGN(4, EAXs) != SIGN(4, ((i32)48)) && SIGN(4, (i32)(EAXs - ((i32)48))) == SIGN(4, ((i32)48));
 	EAX = EAX - ((u32)48);
@@ -186,6 +211,7 @@ void string_to_int() {
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
 	ADDR_10153A:; // ADD dword ptr [RBP + -0x4],EAX
+	++__instruction_count;
 	temp_12544._8 = RBP + ((u64)-4);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	CF = (u32)(temp_48256._4 + EAX) < temp_48256._4;
@@ -204,6 +230,7 @@ void string_to_int() {
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
 	ADDR_10153D:; // ADD qword ptr [RBP + -0x10],0x1
+	++__instruction_count;
 	temp_12544._8 = RBP + ((u64)-16);
 	temp_48640._8 = RAM(temp_12544._8)._8;
 	CF = (u64)(temp_48640._8 + ((u64)1)) < temp_48640._8;
@@ -222,14 +249,17 @@ void string_to_int() {
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
 	ADDR_101542:; // MOV RAX,qword ptr [RBP + -0x10]
+	++__instruction_count;
 	temp_12544._8 = RBP + ((u64)-16);
 	temp_48512._8 = RAM(temp_12544._8)._8;
 	RAX = temp_48512._8;
 	ADDR_101546:; // MOVZX EAX,byte ptr [RAX]
+	++__instruction_count;
 	temp_47872._1 = RAM(RAX)._1;
 	EAX = temp_47872._1;
 	RAX = EAX;
 	ADDR_101549:; // TEST AL,AL
+	++__instruction_count;
 	CF = ((u8)0);
 	OF = ((u8)0);
 	temp_364544._1 = AL & AL;
@@ -240,9 +270,11 @@ void string_to_int() {
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
 	ADDR_10154B:; // JNZ 0x0010151e
+	++__instruction_count;
 	temp_50816._1 = !ZF;
 	if (temp_50816._1) goto ADDR_10151E;
 	ADDR_10154D:; // CMP dword ptr [RBP + -0x14],0x0
+	++__instruction_count;
 	temp_12544._8 = RBP + ((u64)-20);
 	temp_48384._4 = RAM(temp_12544._8)._4;
 	CF = temp_48384._4 < ((u32)0);
@@ -257,13 +289,16 @@ void string_to_int() {
 	temp_77056._1 = temp_76928._1 & ((u8)1);
 	PF = temp_77056._1 == ((u8)0);
 	ADDR_101551:; // JZ 0x0010155a
+	++__instruction_count;
 	if (ZF) goto ADDR_10155A;
 	ADDR_101553:; // MOV EAX,dword ptr [RBP + -0x4]
+	++__instruction_count;
 	temp_12544._8 = RBP + ((u64)-4);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EAX = temp_48256._4;
 	RAX = EAX;
 	ADDR_101556:; // NEG EAX
+	++__instruction_count;
 	CF = EAX != ((u32)0);
 	OF = SIGN(4, ((i32)0)) != SIGN(4, EAXs) && SIGN(4, (i32)(((i32)0) - EAXs)) == SIGN(4, EAXs);
 	EAXs = -EAXs;
@@ -275,16 +310,20 @@ void string_to_int() {
 	PF = temp_77056._1 == ((u8)0);
 	RAX = EAX;
 	ADDR_101558:; // JMP 0x0010155d
+	++__instruction_count;
 	goto ADDR_10155D;
 	ADDR_10155A:; // MOV EAX,dword ptr [RBP + -0x4]
+	++__instruction_count;
 	temp_12544._8 = RBP + ((u64)-4);
 	temp_48256._4 = RAM(temp_12544._8)._4;
 	EAX = temp_48256._4;
 	RAX = EAX;
 	ADDR_10155D:; // POP RBP
+	++__instruction_count;
 	RBP = RAM(RSP)._8;
 	RSP = RSP + ((u64)8);
 	ADDR_10155E:; // RET
+	++__instruction_count;
 	RIP = RAM(RSP)._8;
 	RSP = RSP + ((u64)8);
 	return;

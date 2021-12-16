@@ -1,6 +1,8 @@
 #include "dragonlifter.h"
 
 void bitwise_xor() {
+	static const void* labels[] = { &&ADDR_1017AF,NULL,NULL,NULL,&&ADDR_1017B3,&&ADDR_1017B4,NULL,NULL,&&ADDR_1017B7,NULL,NULL,&&ADDR_1017BA,NULL,NULL,&&ADDR_1017BD,NULL,NULL,&&ADDR_1017C0,NULL,NULL,&&ADDR_1017C3,&&ADDR_1017C4 };
+	static const size_t labels_base_address = 1054639;
 	ADDR_1017AF:; // ENDBR64
 	
 	ADDR_1017B3:; // PUSH RBP

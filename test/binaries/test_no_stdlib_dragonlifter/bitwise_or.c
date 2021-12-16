@@ -1,6 +1,8 @@
 #include "dragonlifter.h"
 
 void bitwise_or() {
+	static const void* labels[] = { &&ADDR_101799,NULL,NULL,NULL,&&ADDR_10179D,&&ADDR_10179E,NULL,NULL,&&ADDR_1017A1,NULL,NULL,&&ADDR_1017A4,NULL,NULL,&&ADDR_1017A7,NULL,NULL,&&ADDR_1017AA,NULL,NULL,&&ADDR_1017AD,&&ADDR_1017AE };
+	static const size_t labels_base_address = 1054617;
 	ADDR_101799:; // ENDBR64
 	
 	ADDR_10179D:; // PUSH RBP
