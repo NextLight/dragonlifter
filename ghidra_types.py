@@ -162,8 +162,8 @@ class Program:
     registers_blocks: list[RegistersBlock]
     memory: Memory
 
-    @classmethod
-    def load(cls, f) -> "Program":
+    @staticmethod
+    def load(f) -> "Program":
         return _map_object_to_dataclass(json.load(f), Program)
 
 def _map_object_to_dataclass(o, cls_type: type):
