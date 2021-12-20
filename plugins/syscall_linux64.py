@@ -1,9 +1,26 @@
 import os
+from typing import Optional
+
+from code_emitter import CodeEmitter
 from lifters.core_lifter import CoreLifter
 from lifters.program_lifter import ProgramLifter
 
+SYSCALL_N_REG = 'rax'
+SYSCALL_OUT_REG = 'rax'
+SYSCALL_ARGS = ['rdi', 'rsi', 'rdx', 'r10', 'r8', 'r9']
+SYSCALL_CLOBBERS = ['rcx', 'r11', 'memory']
 
-SYSCALLS = [
+GENERIC_CONSTRAINT = 'r'
+REG_TO_CONSTRAINT = {
+    'rax': 'a',
+    'rdi': 'D',
+    'rsi': 'S',
+    'rdx': 'd',
+    'r10': GENERIC_CONSTRAINT,
+    'r8': GENERIC_CONSTRAINT,
+    'r9': GENERIC_CONSTRAINT,
+}
+SYSCALLS: list[tuple[Optional[str], list[str]]] = [
     ('read', ['unsigned int fd', 'char __user *buf', 'size_t count']),
     ('write', ['unsigned int fd', 'const char __user *buf', 'size_t count']),
     ('open', ['const char __user *filename', 'int flags', 'umode_t mode']),
@@ -158,11 +175,11 @@ SYSCALLS = [
     ('mlockall', ['int flags']),
     ('munlockall', ['void']),
     ('vhangup', ['void']),
-    None,
+    (None, []),
     ('pivot_root', ['const char __user *new_root', 'const char __user *put_old']),
     ('ni_syscall', ['void']),
     ('prctl', ['int option', 'unsigned long arg2', 'unsigned long arg3', 'unsigned long arg4', 'unsigned long arg5']),
-    None,
+    (None, []),
     ('adjtimex', ['struct __kernel_timex __user *txc_p']),
     ('setrlimit', ['unsigned int resource', 'struct rlimit __user *rlim']),
     ('chroot', ['const char __user *filename']),
@@ -176,7 +193,7 @@ SYSCALLS = [
     ('reboot', ['int magic1', 'int magic2', 'unsigned int cmd', 'void __user *arg']),
     ('sethostname', ['char __user *name', 'int len']),
     ('setdomainname', ['char __user *name', 'int len']),
-    None,
+    (None, []),
     ('ioperm', ['unsigned long from', 'unsigned long num', 'int on']),
     ('not implemented', []),
     ('init_module', ['void __user *umod', 'unsigned long len', 'const char __user *uargs']),
@@ -366,7 +383,7 @@ SYSCALLS = [
     ('process_mrelease', ['int pidfd', 'unsigned int flags']),
     ('not implemented', []),
     ('compat_sys_rt_sigaction', ['int', 'const struct compat_sigaction __user *', 'struct compat_sigaction __user *', 'compat_size_t']),
-    None,
+    (None, []),
     ('compat_sys_ioctl', ['unsigned int fd', 'unsigned int cmd', 'compat_ulong_t arg']),
     ('readv', ['unsigned long fd', 'const struct iovec __user *vec', 'unsigned long vlen']),
     ('writev', ['unsigned long fd', 'const struct iovec __user *vec', 'unsigned long vlen']),
@@ -411,19 +428,60 @@ class CoreLifterSyscallLinux64(CoreLifter):
 
 class ProgramLifterSyscallLinux64(ProgramLifter):
     def emit(self, directory: str) -> None:
-        if not os.path.isfile(os.path.join(directory, 'syscalls.h')):
-            pass
+        for r in [SYSCALL_N_REG, SYSCALL_OUT_REG] + SYSCALL_ARGS:
+            self.lifter.core.used_registers_offset.add(self.lifter.core.register_name_to_offset[r.upper()])
+        syscalls_h_path = os.path.join(directory, 'syscalls.h')
+        if not os.path.isfile(syscalls_h_path):
+            self.emit_syscalls_h(syscalls_h_path)
         super().emit(directory)
 
-    def generate_syscalls_h(self) -> str:
+    def emit_syscalls_h(self, path: str) -> None:
+        with open(path, 'w') as f:
+            emitter = CodeEmitter(f)
+            emitter.emit(self.generate_syscall_helper_functions())
+            emitter.emit(self.generate_syscalls_dispatcher())
 
+    def generate_syscalls_dispatcher(self) -> str:
+        return '\n'.join((
+            'static inline void __dispatch_syscall(int n) {',
+            'switch (n) {',
+            self.generate_syscalls_dispatcher_cases(),
+            '}',
+            '}',
+        ))
+
+    def generate_syscalls_dispatcher_cases(self) -> str:
+        cases = []
+        for id, (name, params) in enumerate(SYSCALLS):
+            args = [SYSCALL_N_REG.upper()] + [f'(long)RAM_ADDR({r.upper()})' if '*' in p else r.upper() for p, r in zip(params, SYSCALL_ARGS)]
+            call = f' __syscall{len(args)-1}({", ".join(args)})'
+            cases.append(f'case {id}: {SYSCALL_OUT_REG.upper()} = {call}; break; // {name}({", ".join(params)})')
+        return '\n'.join(cases)
     
-        functions_used = set()
-        for id, (name, args) in enumerate(SYSCALLS):
-            n_args = len(args)
-            args_with_pointer = [i for i, a in enumerate(args) if '*' in a]
-            functions_used.add((n_args, args_with_pointer))
-            f'case {id}: {self.syscall_args_to_name(n_args, args_with_pointer)} // {name}({", ".join(args)})'
+    def generate_syscall_helper_functions(self) -> str:
+        funs = []
+        for i in range(len(SYSCALL_ARGS) + 1):
+            regs = [SYSCALL_N_REG] + SYSCALL_ARGS[:i]
+            vars = [(f'_{r}' if REG_TO_CONSTRAINT[r] == GENERIC_CONSTRAINT else r) for r in regs]
+            params = ', '.join(f'long {r}' for r in regs)
+            generic_constraints = ''.join(
+                f'register long {v} __asm__("{r}") = {r};\n' for r, v in zip(regs, vars) if v[0] == '_')
+            constraints = ', '.join(f'"{REG_TO_CONSTRAINT[r]}"({v})' for r, v in zip(regs, vars))
+            clobbers = ', '.join(f'"{c}"' for c in SYSCALL_CLOBBERS)
+            funs.append(f'''
+                static inline long __syscall{i}({params}) {{
+                    unsigned long ret;
+                    {generic_constraints}
+                    __asm__ __volatile__(
+                        "syscall"
+                        : "={SYSCALL_OUT_REG}"(ret)
+                        : {constraints}
+                        : {clobbers}
+                    );
+                    return ret;
+                }}
+            ''')
+        return ''.join(funs)
     
-    def syscall_args_to_name(self, n_args: int, args_with_pointer: list[int]) -> str:
+    def syscall_helper_args_to_name(self, n_args: int, args_with_pointer: list[int]) -> str:
         return f'__sys_{n_args}_{"".join(map(str, args_with_pointer))}'

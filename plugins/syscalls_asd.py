@@ -2,7 +2,7 @@ import json
 import os
 
 syscalls_json = json.load(open(os.path.join(os.path.dirname(__file__), 'syscalls-x86_64.json')))
-syscalls = [None] * max(s[0] + 1 for s in syscalls_json)
+syscalls: list = [(None, [])] * max(s[0] + 1 for s in syscalls_json)
 for id, name, signature_params, rax, rdi, rsi, rdx, r10, r8, r9, file, line in syscalls_json:
     name = name.removeprefix('sys_')
     if not name:
