@@ -19,6 +19,7 @@ class CoreHelper:
         self.registers_from_offset = {b.offset: b.registers for b in program.registers_blocks}
         self.address_space_name_to_id = {name: id for name, id in program.address_spaces}
         self.address_to_function = {f.address: f for f in program.functions}
+        self.possible_entry_points = self._find_possible_entry_points()
 
         self.used_registers_offset: set[int] = set()
         self.used_temp_variables: set[int] = set()
@@ -73,3 +74,16 @@ class CoreHelper:
     def temp_variable(self, id: int) -> str:
         self.used_temp_variables.add(id)
         return f'temp_{id}'
+
+
+    def _find_possible_entry_points(self):
+        funs = self.program.functions
+        entry_points = set(f.name for f in funs)
+        for f in funs:
+            for instr in f.instructions:
+                for p in instr.pcodes:
+                    if p.op == Op.CALL:
+                        name = self.function(p.input[0].value).name
+                        if name != f.name:
+                            entry_points.discard(name)
+        return entry_points

@@ -52,6 +52,7 @@ class CoreLifter:
         self.setup_registers()
         self.setup_function_declarations()
         self.setup_callother()
+        self.setup_init()
 
     def setup_default_types(self):
         self.h_includes.append('#include <stddef.h>')
@@ -140,6 +141,11 @@ class CoreLifter:
     def setup_callother(self):
         self.defines.append('#define CALLOTHER(f, ...) CALLOTHER_##f(__VA_ARGS__)')
 
+    def setup_init(self):
+        self.c_fields.append('u8 __dragonlifter_initialized = 0;')
+        self.h_fields.append('extern u8 __dragonlifter_initialized;')
+        self.functions.append(self.generate_init_function())
+
 
     def generate_math_defines(self) -> str:
         return '\n'.join((
@@ -180,6 +186,17 @@ class CoreLifter:
 
     def generate_varnode_type_typedef(self) -> str:
         return f'typedef union {{\n{self.generate_varnode_type_fields()}\n}} {self.core.varnode_type_name};'
+
+    def generate_init_function(self) -> str:
+        return f'''static inline void __dragonlifter_init() {{
+            if (__dragonlifter_initialized)
+                return;
+            __dragonlifter_initialized = 1;
+            {self.generate_init_body()}
+        }}'''
+
+    def generate_init_body(self) -> str:
+        return ''
 
 
     def decompress_memory(self, compressed: str) -> bytes:

@@ -13,3 +13,6 @@ class CoreLifterInstructionCount(CoreLifter):
         super().setup()
         self.c_fields.append('u64 __instruction_count = 0;')
         self.h_fields.append('extern u64 __instruction_count;')
+        self.typedefs.append('extern void * stderr;')
+        self.typedefs.append('extern void fprintf(void * file, const char * format, ...);')
+        self.functions.append('static void __print_instruction_count() { fprintf(stderr, "count: %llu\n", __instruction_count); }')
