@@ -17,6 +17,7 @@ class CoreHelper:
             for r in rb.registers
         }
         self.registers_from_offset = {b.offset: b.registers for b in program.registers_blocks}
+        self.register_name_to_offset = {r.name: b.offset for b in program.registers_blocks for r in b.registers}
         self.address_space_name_to_id = {name: id for name, id in program.address_spaces}
         self.address_to_function = {f.address: f for f in program.functions}
         self.possible_entry_points = self._find_possible_entry_points()
