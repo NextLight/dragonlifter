@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# dragonlifter's testing artifacts
+/test/binaries/*
+!/test/binaries/*.c
