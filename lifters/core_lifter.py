@@ -53,6 +53,7 @@ class CoreLifter:
         self.setup_function_declarations()
         self.setup_function_pointers()
         self.setup_callother()
+        self.setup_labels()
         self.setup_init()
 
     def setup_default_types(self):
@@ -165,6 +166,9 @@ class CoreLifter:
 
     def setup_callother(self):
         self.defines.append('#define CALLOTHER(f, ...) CALLOTHER_##f(__VA_ARGS__)')
+
+    def setup_labels(self):
+        self.defines.append('#define LOCAL_LABEL(v) *labels[v - labels_base_address]')
 
     def setup_init(self):
         self.c_fields.append('u8 __dragonlifter_initialized = 0;')

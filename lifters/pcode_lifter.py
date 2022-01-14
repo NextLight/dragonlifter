@@ -149,7 +149,8 @@ class PcodeLifter:
     def _cbranch(self, in0: Input, in1: Input):
         return f'if ({self.var(in1)}) {self._branch(in0)}'
 
-    #def _branchind(self): raise NotImplementedError("P-code BRANCHIND is not implemented yet.")
+    def _branchind(self, in0: Input):
+        return f'goto LOCAL_LABEL({self.var(in0)});'
 
     def _call(self, in0: Input):
         assert in0.type == VarnodeType.RAM

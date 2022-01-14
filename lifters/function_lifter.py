@@ -30,7 +30,10 @@ class FunctionLifter:
         return ''
     
     def generate_body(self) -> str:
-        return '\n'.join(map(self.lift_instruction, self.function.instructions))
+        return '\n\n'.join((
+            self.generate_labels_jumptable(),
+            '\n'.join(map(self.lift_instruction, self.function.instructions)),
+        ))
 
     def generate_signature(self) -> str:
         return f'void {self.generate_function_name()}()'
@@ -42,6 +45,15 @@ class FunctionLifter:
         if self.function.name in self.lifter.core.possible_entry_points:
             return '__dragonlifter_init();'
         return None
+
+    def generate_labels_jumptable(self) -> str:
+        addresses = {i.address for i in self.function.instructions}
+        min_addr = min(addresses)
+        max_addr = max(addresses)
+        return '\n'.join((
+            f'static const void* labels[] = {{ {",".join("&&" + self.lifter.core.instruction_label(i) if i in addresses else "NULL" for i in range(min_addr, max_addr+1))} }};',
+            f'static const size_t labels_base_address = {min_addr};',
+        ))
     
     def lift_instruction(self, instr: Instruction) -> str:
         return self.lifter.InstructionLifter(self.lifter, instr).lift()
