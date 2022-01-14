@@ -17,8 +17,6 @@ from lifters.program_lifter import ProgramLifter
 
 
 class Dragonlifter:
-    _EMPTY: "Dragonlifter"
-
     def __init__(
             self,
             program: Program,

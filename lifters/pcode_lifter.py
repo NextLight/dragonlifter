@@ -371,11 +371,13 @@ class PcodeLifter:
 
     def _piece(self, out: Output, in0: Input, in1: Input):
         assert in0.size + in1.size == out.size
-        return f'{self.var(out)} = {self.var(in0)} * {hex(2 ** (in1.size * self.core.byte_size))} | {self.var(in1)};'
+        t = self.size_and_kind_to_type(out.size, VarKind.UNSIGNED)
+        return f'{self.var(out)} = {self.var(in0)} * (({t})1 << {in1.size * self.core.byte_size}) | {self.var(in1)};'
 
     def _subpiece(self, out: Output, in0: Input, in1: Input):
         assert in1.type == VarnodeType.CONSTANT
-        return f'{self.var(out)} = ({self.var(in0)} / {hex(2 ** (in1.value * self.core.byte_size))});'
+        t = self.size_and_kind_to_type(in0.size, VarKind.UNSIGNED)
+        return f'{self.var(out)} = {self.var(in0)} / (({t})1 << {in1.value * self.core.byte_size});'
 
     #def _cast(self): raise NotImplementedError("P-code CAST is not implemented yet.")
     #def _ptradd(self): raise NotImplementedError("P-code PTRADD is not implemented yet.")
