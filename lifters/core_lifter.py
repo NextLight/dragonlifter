@@ -51,6 +51,7 @@ class CoreLifter:
         self.setup_temp_variables()
         self.setup_registers()
         self.setup_function_declarations()
+        self.setup_function_pointers()
         self.setup_callother()
         self.setup_init()
 
@@ -135,8 +136,32 @@ class CoreLifter:
 
     def setup_function_declarations(self):
         self.functions.append('')
-        for f in self.core.program.functions:
+        for f in self.core.functions_to_export:
             self.functions.append(f'extern void {f.name}();')
+
+    def setup_function_pointers(self):
+        self.typedefs.append('typedef struct { address_t addr; funcptr_t func; } addr_to_func_t;')
+        funs = ",".join(f"{{{f.address},{f.name}}}" for f in self.core.functions_to_export)
+        self.h_fields.append(f'extern const addr_to_func_t functions[];')
+        self.h_fields.append(f'extern const size_t functions_count;')
+        self.c_fields.append(f'const addr_to_func_t functions[] = {{ {funs} }};')
+        self.c_fields.append(f'const size_t functions_count = sizeof(functions) / sizeof(functions[0]);')
+        self.functions.append('''
+            static inline funcptr_t function_binary_search(const addr_to_func_t * arr, size_t size, address_t addr) {
+                size_t l = 0, r = size - 1;
+                while (l <= r) {
+                    size_t m = l + (r - l) / 2;
+                    if (arr[m].addr == addr)
+                        return arr[m].func;
+                    else if (arr[m].addr < addr)
+                        l = m + 1;
+                    else
+                        r = m - 1;
+                }
+                return NULL;
+            }
+        '''.strip())
+        self.defines.append('#define CALL_FUNCTION_AT(addr) function_binary_search(functions, functions_count, addr)()')
 
     def setup_callother(self):
         self.defines.append('#define CALLOTHER(f, ...) CALLOTHER_##f(__VA_ARGS__)')

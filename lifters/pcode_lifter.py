@@ -156,7 +156,8 @@ class PcodeLifter:
         # TODO: fallback to a BRANCH if the function could not be found.
         return f'{self.core.function(in0.value).name}();'
 
-    #def _callind(self): raise NotImplementedError("P-code CALLIND is not implemented yet.")
+    def _callind(self, in0: Input):
+        return f'CALL_FUNCTION_AT({self.var(in0)});'
 
     def _callother(self, out: Optional[Output], in0: Input, other_inputs: list[Input]):
         assert in0.type == VarnodeType.CONSTANT
